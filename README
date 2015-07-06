@@ -1,0 +1,9 @@
+touch Makefile.am
+autoscan
+vi configure.scan
+aclocal
+autoconf
+autoheader
+automake --add-missing
+./configure
+
