@@ -1,3 +1,4 @@
+自动处理
 touch Makefile.am
 autoscan
 vi configure.scan
