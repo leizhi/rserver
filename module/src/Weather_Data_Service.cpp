@@ -103,16 +103,12 @@ int main(int argc, char* argv[])
         pChannelItem = NULL;
     }
 
-    sleep(10);
-    
     char s[1024];
     fgets(s,1024,stdin);
     while(strcmp(s,"exit\n")!=0){
         fgets(s,1024,stdin);
         //printf("%s",s);
     }
-
-    //pthread_exit(NULL);
 
     printfs(1, "Exit Weather_Data_service Application!");
     pObjectInstance = CObjectFactory::GetInstance();
@@ -125,6 +121,8 @@ int main(int argc, char* argv[])
         delete pFactoryInstance;
         pFactoryInstance = NULL;
     }
+
+    //pthread_exit(NULL);
 
     return 0;
 }
