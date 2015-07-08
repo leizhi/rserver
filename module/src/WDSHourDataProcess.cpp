@@ -24,7 +24,6 @@
     返回值        ：  无
 ******************************************************************************/
 CWDSHourDataProcess::CWDSHourDataProcess(){
-    //m_//pSysLogger           = NULL;
     m_pSendSocket          = NULL;
     m_pRecvSocket          = NULL;
     m_nFuncType            = -1;
@@ -37,7 +36,6 @@ CWDSHourDataProcess::CWDSHourDataProcess(){
     返回值        ：  无
 ******************************************************************************/
 CWDSHourDataProcess::~CWDSHourDataProcess(){
-    //m_//pSysLogger  = NULL;
     m_pRecvSocket = NULL;
     if(m_pSendSocket != NULL) {
         if (!m_pSendSocket->IsClosed()){
@@ -55,7 +53,6 @@ CWDSHourDataProcess::~CWDSHourDataProcess(){
     返回值        ：  无
 ******************************************************************************/
 void CWDSHourDataProcess::Do(){
-    //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
     printfs(1,"<CWDSHourDataProcess::Do()> WDSHourDataProcess start!");
 
     int nStatus = 0;

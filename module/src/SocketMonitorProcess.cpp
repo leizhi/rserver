@@ -26,7 +26,6 @@
 ******************************************************************************/
 CSocketMonitorProcess::CSocketMonitorProcess(){
     //CObjectFactory* pInstance = CObjectFactory::GetInstance();
-    //m_//pSysLogger              = pInstance->GetSysLogger();
     m_pRecvSocket             = NULL;
     m_bBreakFlag              = false;
     m_nSocketPort             = -1;
@@ -40,7 +39,6 @@ CSocketMonitorProcess::CSocketMonitorProcess(){
     返回值        ：  无
 ******************************************************************************/
 CSocketMonitorProcess::~CSocketMonitorProcess(){
-    //m_//pSysLogger  = NULL;
     m_pRecvSocket = NULL;
 
 }

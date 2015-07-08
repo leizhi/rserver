@@ -25,7 +25,6 @@
 ******************************************************************************/
 CChannelItem::CChannelItem(int nSocketPort)
 : m_nSocketPort(nSocketPort){
-    //m_//pSysLogger = CObjectFactory::GetInstance()->GetSysLogger();
 
     m_pSocketMonitor       = NULL;    /* 端口监视器                          */
     m_pSocketMonitorThread = NULL;    /* 端口监视器子线程                    */

@@ -12,7 +12,6 @@ CMySQLPool::CMySQLPool()
 
 CMySQLPool::CMySQLPool(const char *host, const char *user, const char *password, const char *db, unsigned int port/* =3306 */)
 {
-    //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
     strcpy(m_host, host);
     strcpy(m_user, user);
     strcpy(m_password, password);

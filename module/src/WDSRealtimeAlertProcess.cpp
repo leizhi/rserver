@@ -25,7 +25,6 @@
     返回值        ：  无
 ******************************************************************************/
 CWDSRealtimeAlertProcess::CWDSRealtimeAlertProcess(){
-    //m_//pSysLogger           = NULL;
     m_pSendSocket          = NULL;
     m_pRecvSocket          = NULL;
     m_nFuncType            = -1;
@@ -38,7 +37,6 @@ CWDSRealtimeAlertProcess::CWDSRealtimeAlertProcess(){
     返回值        ：  无
 ******************************************************************************/
 CWDSRealtimeAlertProcess::~CWDSRealtimeAlertProcess(){
-    //m_//pSysLogger  = NULL;
     m_pRecvSocket = NULL;
     if(m_pSendSocket != NULL) {
         if (!m_pSendSocket->IsClosed()){
@@ -56,7 +54,6 @@ CWDSRealtimeAlertProcess::~CWDSRealtimeAlertProcess(){
     返回值        ：  无
 ******************************************************************************/
 void CWDSRealtimeAlertProcess::Do(){
-    //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
     printfs(1,"<CWDSRealtimeAlertProcess::Do()> WDSRealtimeAlertProcess start!");
 
     int nStatus = 0;

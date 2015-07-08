@@ -25,7 +25,6 @@
     返回值        ：  无
 ******************************************************************************/
 CWDSStationImageProcess::CWDSStationImageProcess(){
-    //m_//pSysLogger           = NULL;
     m_pSendSocket          = NULL;
     m_pRecvSocket          = NULL;
     m_nFuncType            = -1;
@@ -44,7 +43,6 @@ CWDSStationImageProcess::~CWDSStationImageProcess(){
         delete m_pFile;
         m_pFile = NULL;
     }
-    //m_//pSysLogger  = NULL;
     m_pRecvSocket = NULL;
     if(m_pSendSocket != NULL) {
         if (!m_pSendSocket->IsClosed()){
@@ -62,7 +60,6 @@ CWDSStationImageProcess::~CWDSStationImageProcess(){
     返回值        ：  无
 ******************************************************************************/
 void CWDSStationImageProcess::Do(){
-    //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
     printfs(1,"<CWDSStationImageProcess::Do()> WDSStationImageProcess start!");
 
     int nStatus = 0;

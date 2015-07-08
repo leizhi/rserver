@@ -30,7 +30,6 @@ CObjectFactory::CObjectFactory(){
     memset(m_channelConfFile, 0x00, 256);
     memset(m_systemConfFile, 0x00, 256);
     //m_pObjectContainer = NULL;
-    //m_//pSysLogger       = NULL;
     m_pSystemConfig    = NULL;
     m_pConfigFile      = NULL;
 
@@ -68,7 +67,6 @@ CObjectFactory::~CObjectFactory(){
     }
     //if(//m_//pSysLogger){
     //    delete //m_//pSysLogger;
-        //m_//pSysLogger = NULL;
     //}
 }
 
@@ -224,17 +222,14 @@ CSystemConfigInfo* CObjectFactory::GetSystemConfigInfo() {
     
     if (NULL == //m_//pSysLogger){
         m_sMutex.TryLock();
-        //m_//pSysLogger = new //CLog();
         m_sMutex.UnLock();
     }
 
     // 系统Logger                                                        
     if (NULL != m_pSystemConfig) {
         // 初始化Logger                                                  
-        //m_//pSysLogger->Init(m_pSystemConfig->GetLogLevel(),
                                m_pSystemConfig->GetLogPath());
      }else{
-        //m_//pSysLogger->Init(3, "../wds_log/");
      }
     return //m_//pSysLogger;
 }

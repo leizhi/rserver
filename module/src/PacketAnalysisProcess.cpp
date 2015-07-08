@@ -26,7 +26,6 @@
 ******************************************************************************/
 CPacketAnalysisProcess::CPacketAnalysisProcess(HTCPSocket* pRecvSocket)
 : m_pRecvSocket(pRecvSocket){
-    //m_//pSysLogger           = NULL;
     m_pSendSocket          = NULL;
     m_nFuncType            = -1;
 }
@@ -38,7 +37,6 @@ CPacketAnalysisProcess::CPacketAnalysisProcess(HTCPSocket* pRecvSocket)
     返回值        ：  无
 ******************************************************************************/
 CPacketAnalysisProcess::~CPacketAnalysisProcess(){
-    //m_//pSysLogger = NULL;
     m_pRecvSocket = NULL;
     if(m_pSendSocket != NULL) {
         m_pSendSocket->Close();
@@ -59,7 +57,6 @@ CPacketAnalysisProcess::~CPacketAnalysisProcess(){
     返回值        ：  无
 ******************************************************************************/
 void CPacketAnalysisProcess::Do(){
-    //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
     printfs(1,"<CPacketAnalysisProcess::Do()> Analysis packet process start!");
 
     int nProcessType = 0;

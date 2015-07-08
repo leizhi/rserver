@@ -33,7 +33,6 @@
 WDS_DBHelper::WDS_DBHelper(std::string hosts, std::string userName,
                            std::string password, std::string dbName, unsigned int port)
 {
-    //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
     IsConnected = false;
     this->setHosts(hosts);        // 设置主机IP地址
     this->setUserName(userName);  // 设置登录用户名
@@ -45,7 +44,6 @@ WDS_DBHelper::WDS_DBHelper(std::string hosts, std::string userName,
 
 WDS_DBHelper::WDS_DBHelper()
 {
-    //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
     m_bCreateByHandle = true;
     IsConnected       = true;
 }
@@ -57,7 +55,6 @@ WDS_DBHelper::WDS_DBHelper()
 ******************************************************************************/
 WDS_DBHelper::~WDS_DBHelper(void)
 {
-    //m_//pSysLogger = NULL;
     if (!m_bCreateByHandle)
         this ->destroyConnection();
 }

@@ -25,7 +25,6 @@
     返回值        ：  无
 ******************************************************************************/
 CWDSStationRegisterProcess::CWDSStationRegisterProcess(){
-    //m_//pSysLogger           = NULL;
     m_pSendSocket          = NULL;
     m_pRecvSocket          = NULL;
     m_nFuncType            = -1;
@@ -38,7 +37,6 @@ CWDSStationRegisterProcess::CWDSStationRegisterProcess(){
     返回值        ：  无
 ******************************************************************************/
 CWDSStationRegisterProcess::~CWDSStationRegisterProcess(){
-    //m_//pSysLogger  = NULL;
     m_pRecvSocket = NULL;
     if(m_pSendSocket != NULL) {
         if (!m_pSendSocket->IsClosed()){
@@ -56,7 +54,6 @@ CWDSStationRegisterProcess::~CWDSStationRegisterProcess(){
     返回值        ：  无
 ******************************************************************************/
 void CWDSStationRegisterProcess::Do(){
-    //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
     printfs(1,"<CWDSStationRegisterProcess::Do()> WDSStationRegisterProcess start!");
 
     int nStatus = 0;

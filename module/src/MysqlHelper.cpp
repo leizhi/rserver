@@ -31,7 +31,6 @@
 MysqlHelper::MysqlHelper(string hosts, string userName, string password, 
                          string dbName, unsigned int port)
 {
-    //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
     IsConnected = false;
     this->setHosts(hosts);        // 设置主机IP地址
     this->setUserName(userName);  // 设置登录用户名
@@ -44,7 +43,6 @@ MysqlHelper::MysqlHelper(string hosts, string userName, string password,
 
 MysqlHelper::MysqlHelper()
 {
-    //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
     m_bCreateByHandle = true;
     IsConnected       = true;
     m_pSQLClient      = NULL;
@@ -58,7 +56,6 @@ MysqlHelper::MysqlHelper()
 ******************************************************************************/
 MysqlHelper::~MysqlHelper()
 {
-    //m_//pSysLogger = NULL;
     if (!m_bCreateByHandle)
         this ->destroyConnection();
 }
