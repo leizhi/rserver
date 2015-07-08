@@ -103,6 +103,7 @@ int main(int argc, char* argv[])
         pChannelItem = NULL;
     }
 
+    sleep(1);
     printfs(1, "Exit Weather_Data_service Application!");
     pObjectInstance = CObjectFactory::GetInstance();
     if ( pObjectInstance != NULL ){
@@ -114,6 +115,8 @@ int main(int argc, char* argv[])
         delete pFactoryInstance;
         pFactoryInstance = NULL;
     }
+
+    pthread_exit(NULL);
 
     return 0;
 }
