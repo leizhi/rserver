@@ -50,7 +50,7 @@ void printfs(unsigned int nlevel, const char * fmt, ...){
 	    time_t t = time(0);
 	    char times[64]={0};
 
-	    strftime(times, sizeof(times), "%Y/%m/%d %X DEBUG:",localtime(&t));
+	    strftime(times, sizeof(times), "%Y/%m/%d %X:",localtime(&t));
 
         sprintf(logbuf, "%s [%s] %s", times, cType, buf);
 
