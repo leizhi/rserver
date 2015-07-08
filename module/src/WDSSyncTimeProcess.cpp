@@ -56,7 +56,7 @@ CWDSSyncTimeProcess::~CWDSSyncTimeProcess(){
 ******************************************************************************/
 void CWDSSyncTimeProcess::Do(){
     //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
-    //m_//pSysLogger->Add(1,"<CWDSSyncTimeProcess::Do()> WDSSyncTimeProcess start!");
+    printfs(1,"<CWDSSyncTimeProcess::Do()> WDSSyncTimeProcess start!");
 
     int nRet = 0;
     int nStatus = 0;
@@ -67,25 +67,25 @@ void CWDSSyncTimeProcess::Do(){
 
     do{
         if (m_pRecvSocket == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSSyncTimeProcess::Do()> m_pRecvSocket == NULL");
+            printfs(0,"<CWDSSyncTimeProcess::Do()> m_pRecvSocket == NULL");
             break;;
         }
 
         // 【业务处理】1. 取得端口传入的小时气象数据信息数据
         nRet = m_pRecvSocket->Receive((char*)(&syncTimeRequest) + sizeof(stHeader), nLength);
         if(nRet == 0) {
-            //m_//pSysLogger->Add(0,"<CWDSSyncTimeProcess::Do()> Receive packet time out");
+            printfs(0,"<CWDSSyncTimeProcess::Do()> Receive packet time out");
             m_pRecvSocket->Close();
             break;
         }
         if(nRet == -1) {
-            //m_//pSysLogger->Add(0, "<CWDSSyncTimeProcess::Do()> Receive packet failed");
+            printfs(0, "<CWDSSyncTimeProcess::Do()> Receive packet failed");
             m_pRecvSocket->Close();
             break;
         }
-        //m_//pSysLogger->Add(2, "<CWDSSyncTimeProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s]",
-         //                    syncTimeRequest.cCurTime,
-         //                    syncTimeRequest.cStationID);
+        printfs(2, "<CWDSSyncTimeProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s]",
+                             syncTimeRequest.cCurTime,
+                             syncTimeRequest.cStationID);
 
         nStatus = 1;
     }
@@ -101,10 +101,10 @@ void CWDSSyncTimeProcess::Do(){
     // 应答电文送信
     nRet = m_pRecvSocket->Send((char*)(&answerInfo), sizeof(answerInfo));
     if(nRet == 0) {
-        //m_//pSysLogger->Add(0,"<CWDSStationRegisterProcess::Do()> Send status code time out");
+        printfs(0,"<CWDSStationRegisterProcess::Do()> Send status code time out");
     }
     if(nRet == -1) {
-        //m_//pSysLogger->Add(0, "<CWDSStationRegisterProcess::Do()> Send status code failed");
+        printfs(0, "<CWDSStationRegisterProcess::Do()> Send status code failed");
     }
 
     // 发送同步时间应答
@@ -126,16 +126,16 @@ void CWDSSyncTimeProcess::Do(){
         // 应答电文送信
         nRet = m_pRecvSocket->Send((char*)(&syncTimeAnswer), sizeof(syncTimeAnswer));
         if(nRet == 0) {
-            //m_//pSysLogger->Add(0,"<CWDSStationRegisterProcess::Do()> Send status code time out");
+            printfs(0,"<CWDSStationRegisterProcess::Do()> Send status code time out");
         }
         if(nRet == -1) {
-            //m_//pSysLogger->Add(0, "<CWDSStationRegisterProcess::Do()> Send status code failed");
+            printfs(0, "<CWDSStationRegisterProcess::Do()> Send status code failed");
         }
     }
 
     m_pRecvSocket->Close();
 
-    //m_//pSysLogger->Add(1,"<CWDSSyncTimeProcess::Do()> WDSSyncTimeProcess end!");
+    printfs(1,"<CWDSSyncTimeProcess::Do()> WDSSyncTimeProcess end!");
 }
 
 /******************************************************************************

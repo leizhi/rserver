@@ -57,7 +57,7 @@ CWDSStationRegisterProcess::~CWDSStationRegisterProcess(){
 ******************************************************************************/
 void CWDSStationRegisterProcess::Do(){
     //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
-    //m_//pSysLogger->Add(1,"<CWDSStationRegisterProcess::Do()> WDSStationRegisterProcess start!");
+    printfs(1,"<CWDSStationRegisterProcess::Do()> WDSStationRegisterProcess start!");
 
     int nStatus = 0;
     int nRet = 0;
@@ -72,7 +72,7 @@ void CWDSStationRegisterProcess::Do(){
     WDS_DBHelper* pWDSHelper = NULL;
     do{
         if (m_pRecvSocket == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSStationRegisterProcess::Do()> m_pRecvSocket == NULL");
+            printfs(0,"<CWDSStationRegisterProcess::Do()> m_pRecvSocket == NULL");
             nStatus = 0;
             break;;
         }
@@ -80,30 +80,28 @@ void CWDSStationRegisterProcess::Do(){
         // 【业务处理】1. 取得端口传入的小时气象数据信息数据
         nRet = m_pRecvSocket->Receive((char*)(&stationRegister) + sizeof(stHeader), nLength);
         if(nRet == 0) {
-            //m_//pSysLogger->Add(0,"<CWDSStationRegisterProcess::Do()> Receive packet time out");
+            printfs(0,"<CWDSStationRegisterProcess::Do()> Receive packet time out");
             m_pRecvSocket->Close();
             nStatus = 0;
             break;
         }
         if(nRet == -1) {
-            //m_//pSysLogger->Add(0, "<CWDSStationRegisterProcess::Do()> Receive packet failed");
+            printfs(0, "<CWDSStationRegisterProcess::Do()> Receive packet failed");
             m_pRecvSocket->Close();
             nStatus = 0;
             break;
         }
-        //m_//pSysLogger->Add(2, "<CWDSStationRegisterProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s]",
-                         //    stationRegister.cCurTime,
-                   //          stationRegister.cStationID);
+        printfs(2, "<CWDSStationRegisterProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s]",stationRegister.cCurTime,stationRegister.cStationID);
 
         MYSQL* pMysqlConnection = CObjectFactory::GetInstance()->GetMySQLPool()->GetIdleMySql();
         if (pMysqlConnection == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSStationRegisterProcess::Do()> No enough mysql connections!");
+            printfs(0,"<CWDSStationRegisterProcess::Do()> No enough mysql connections!");
             nStatus = 0;
             break;
         }
         pWDSHelper = new WDS_DBHelper();
         if (pWDSHelper == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSStationRegisterProcess::Do()> Can not connect to DB!");
+            printfs(0,"<CWDSStationRegisterProcess::Do()> Can not connect to DB!");
             nStatus = 0;
             break;
         }
@@ -129,19 +127,19 @@ void CWDSStationRegisterProcess::Do(){
             nStatus = pWDSHelper->InsertStationRealtimeStatus(&stationHeartBeat);
         }
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSStationRegisterProcess::Do()> Station realtime status operation failed!");
+            printfs(0,"<CWDSStationRegisterProcess::Do()> Station realtime status operation failed!");
             break;
         }
 
         // 业务处理，取得系统配置表中的同步时间间隔、心跳时间间隔
         nStatus = pWDSHelper->GetSysConfigValuebyCode(SYSTEM_CONFIG_SYNC_STEP, chSyncStep);
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSStationRegisterProcess::Do()> GetSysConfigValuebyCode-SyncStep operation failed!");
+            printfs(0,"<CWDSStationRegisterProcess::Do()> GetSysConfigValuebyCode-SyncStep operation failed!");
             break;
         }
         nStatus = pWDSHelper->GetSysConfigValuebyCode(SYSTEM_CONFIG_HEART_STEP, chHeartStep);
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSStationRegisterProcess::Do()> GetSysConfigValuebyCode-HeartStep operation failed!");
+            printfs(0,"<CWDSStationRegisterProcess::Do()> GetSysConfigValuebyCode-HeartStep operation failed!");
             break;
         }
     }
@@ -162,10 +160,10 @@ void CWDSStationRegisterProcess::Do(){
     // 应答电文送信
     nRet = m_pRecvSocket->Send((char*)(&answerInfo), sizeof(answerInfo));
     if(nRet == 0) {
-        //m_//pSysLogger->Add(0,"<CWDSStationRegisterProcess::Do()> Send status code time out");
+        printfs(0,"<CWDSStationRegisterProcess::Do()> Send status code time out");
     }
     if(nRet == -1) {
-        //m_//pSysLogger->Add(0, "<CWDSStationRegisterProcess::Do()> Send status code failed");
+        printfs(0, "<CWDSStationRegisterProcess::Do()> Send status code failed");
     }
 
     // 发送系统配置应答
@@ -189,16 +187,16 @@ void CWDSStationRegisterProcess::Do(){
         // 应答电文送信
         nRet = m_pRecvSocket->Send((char*)(&stationRegisterAnswer), sizeof(stationRegisterAnswer));
         if(nRet == 0) {
-            //m_//pSysLogger->Add(0,"<CWDSStationRegisterProcess::Do()> Send status code time out");
+            printfs(0,"<CWDSStationRegisterProcess::Do()> Send status code time out");
         }
         if(nRet == -1) {
-            //m_//pSysLogger->Add(0, "<CWDSStationRegisterProcess::Do()> Send status code failed");
+            printfs(0, "<CWDSStationRegisterProcess::Do()> Send status code failed");
         }
     }
 
     m_pRecvSocket->Close();
 
-    //m_//pSysLogger->Add(1,"<CWDSStationRegisterProcess::Do()> WDSStationRegisterProcess end!");
+    printfs(1,"<CWDSStationRegisterProcess::Do()> WDSStationRegisterProcess end!");
 }
 
 /******************************************************************************

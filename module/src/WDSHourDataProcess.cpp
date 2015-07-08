@@ -56,7 +56,7 @@ CWDSHourDataProcess::~CWDSHourDataProcess(){
 ******************************************************************************/
 void CWDSHourDataProcess::Do(){
     //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
-    //m_//pSysLogger->Add(1,"<CWDSHourDataProcess::Do()> WDSHourDataProcess start!");
+    printfs(1,"<CWDSHourDataProcess::Do()> WDSHourDataProcess start!");
 
     int nStatus = 0;
     int nRet = 0;
@@ -69,7 +69,7 @@ void CWDSHourDataProcess::Do(){
     WDS_DBHelper* pWDSHelper = NULL;
     do{
         if (m_pRecvSocket == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSHourDataProcess::Do()> m_pRecvSocket == NULL");
+            printfs(0,"<CWDSHourDataProcess::Do()> m_pRecvSocket == NULL");
             nStatus = 0;
             break;;
         }
@@ -77,18 +77,18 @@ void CWDSHourDataProcess::Do(){
         // 【业务处理】1. 取得端口传入的小时气象数据信息数据
         nRet = m_pRecvSocket->Receive((char*)(&elementsHourData) + sizeof(stHeader), nLength);
         if(nRet == 0) {
-            //m_//pSysLogger->Add(0,"<CWDSHourDataProcess::Do()> Receive packet time out");
+            printfs(0,"<CWDSHourDataProcess::Do()> Receive packet time out");
             m_pRecvSocket->Close();
             nStatus = 0;
             break;
         }
         if(nRet == -1) {
-            //m_//pSysLogger->Add(0, "<CWDSHourDataProcess::Do()> Receive packet failed");
+            printfs(0, "<CWDSHourDataProcess::Do()> Receive packet failed");
             m_pRecvSocket->Close();
             nStatus = 0;
             break;
         }
-        /*m_//pSysLogger->Add(2, "<CWDSHourDataProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s], fCurTemp[%f], fMaxTemp[%f], fMinTemp[%f], fRainfall[%f], fCurAP[%f], fMaxAP[%f], fMinAP[%f], fWindVelocity[%f], cWindDirection[%.4s], fHumidity[%f]",
+        /*m_printfs(2, "<CWDSHourDataProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s], fCurTemp[%f], fMaxTemp[%f], fMinTemp[%f], fRainfall[%f], fCurAP[%f], fMaxAP[%f], fMinAP[%f], fWindVelocity[%f], cWindDirection[%.4s], fHumidity[%f]",
                              elementsHourData.cCurTime,
                              elementsHourData.cStationID,
                              elementsHourData.fCurTemp,
@@ -105,19 +105,19 @@ void CWDSHourDataProcess::Do(){
         // 修改方向为标准方向
         nStatus = CObjectFactory::GetInstance()->ChangeDirection(elementsHourData.cWindDirection);
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSHourDataProcess::Do()> Wind direction error! input wind direct [%s]", elementsHourData.cWindDirection);
+            printfs(0,"<CWDSHourDataProcess::Do()> Wind direction error! input wind direct [%s]", elementsHourData.cWindDirection);
             break;
         }
 
         MYSQL* pMysqlConnection = CObjectFactory::GetInstance()->GetMySQLPool()->GetIdleMySql();
         if (pMysqlConnection == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSHourDataProcess::Do()> No enough mysql connections!");
+            printfs(0,"<CWDSHourDataProcess::Do()> No enough mysql connections!");
             nStatus = 0;
             break;
         }
         pWDSHelper = new WDS_DBHelper();
         if (pWDSHelper == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSHourDataProcess::Do()> Can not connect to DB!");
+            printfs(0,"<CWDSHourDataProcess::Do()> Can not connect to DB!");
             nStatus = 0;
             break;
         }
@@ -126,14 +126,14 @@ void CWDSHourDataProcess::Do(){
         // 业务处理，删除已存在的小时气象数据
         nStatus = pWDSHelper->DeleteElementsHourData(&elementsHourData);
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSHourDataProcess::Do()> DeleteElementsHourData() operation failed!");
+            printfs(0,"<CWDSHourDataProcess::Do()> DeleteElementsHourData() operation failed!");
             break;
         }
 
         // 业务处理，向DB插入小时气象数据
         nStatus = pWDSHelper->InsertElementsHourData(&elementsHourData);
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSHourDataProcess::Do()> InsertElementsHourData() operation failed!");
+            printfs(0,"<CWDSHourDataProcess::Do()> InsertElementsHourData() operation failed!");
             break;
         }
     }
@@ -153,14 +153,14 @@ void CWDSHourDataProcess::Do(){
     // 应答电文送信
     nRet = m_pRecvSocket->Send((char*)(&answerInfo), sizeof(answerInfo));
     if(nRet == 0) {
-        //m_//pSysLogger->Add(0,"<CWDSHourDataProcess::Do()> Send status code time out");
+        printfs(0,"<CWDSHourDataProcess::Do()> Send status code time out");
     }
     if(nRet == -1) {
-        //m_//pSysLogger->Add(0, "<CWDSHourDataProcess::Do()> Send status code failed");
+        printfs(0, "<CWDSHourDataProcess::Do()> Send status code failed");
     }
     m_pRecvSocket->Close();
 
-    //m_//pSysLogger->Add(1,"<CWDSHourDataProcess::Do()> WDSHourDataProcess end!");
+    printfs(1,"<CWDSHourDataProcess::Do()> WDSHourDataProcess end!");
 }
 
 /******************************************************************************

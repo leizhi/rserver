@@ -35,7 +35,7 @@ CChannelItem::CChannelItem(int nSocketPort)
         m_bCanStart = true;           /* 可否启动标志                        */
     } else {
         m_bCanStart = false;
-        //m_//pSysLogger->Add(0, "<CChannelItem>Socket port error! Socket port[%d]", m_nSocketPort);
+        printfs(0, "<CChannelItem>Socket port error! Socket port[%d]", m_nSocketPort);
     }
 }
 
@@ -57,7 +57,7 @@ CChannelItem::~CChannelItem(){
     返回值        ：  无
 ******************************************************************************/
 int CChannelItem::Start(){
-    //m_//pSysLogger->Add(1, "<CChannelItem>Start command received!");
+    printfs(1, "<CChannelItem>Start command received!");
     if(m_bStarted) {
         return 0;
     }
@@ -84,7 +84,7 @@ int CChannelItem::Join(){
     if ( m_pSocketMonitorThread ) {
         /* 1. 等待子线程停止处理                                             */
         m_pSocketMonitorThread->Join();
-        //m_//pSysLogger->Add(1, "<CChannelItem>Join channel Thread complete!");
+        printfs(1, "<CChannelItem>Join channel Thread complete!");
         m_bStarted = false;
     }
     return 0;
@@ -97,7 +97,7 @@ int CChannelItem::Join(){
     返回值        ：  无
 ******************************************************************************/
 int CChannelItem::Stop(){
-    //m_//pSysLogger->Add(1, "<CChannelItem>Stop command received!");
+    printfs(1, "<CChannelItem>Stop command received!");
     ThreadStop();
     m_bStarted = false;
     return 0;
@@ -118,7 +118,7 @@ int CChannelItem::CreateProcess() {
     /* 创建端口监控处理类                                                    */
     if (!m_pSocketMonitor){
         m_pSocketMonitor = (CSocketMonitorProcess*)(pFactoryInstance->GetProcessModule(PRC_TYPE_SOCKET_MONITOR));
-        //m_//pSysLogger->Add(1, "<CChannelItem>Process create succeed!");
+        printfs(1, "<CChannelItem>Process create succeed!");
     }
     if (m_pSocketMonitor == NULL){
         nRet = -1;
@@ -141,7 +141,7 @@ void CChannelItem::ThreadCreate(){
     if(m_pSocketMonitor != NULL) {
         m_pSocketMonitorThread = new HProcessThread( (IProcess*)m_pSocketMonitor );
     }
-    //m_//pSysLogger->Add(1, "<CChannelItem>Create channel monitor process succeed! ");
+    printfs(1, "<CChannelItem>Create channel monitor process succeed! ");
 }
 
 /******************************************************************************
@@ -154,7 +154,7 @@ void CChannelItem::ThreadStart(){
     if ( m_pSocketMonitorThread ){
         m_pSocketMonitorThread->Create();
     }
-    //m_//pSysLogger->Add(1, "<CChannelItem>Create channel monitor thread succeed!");
+    printfs(1, "<CChannelItem>Create channel monitor thread succeed!");
 }
 
 /******************************************************************************
@@ -179,7 +179,7 @@ void CChannelItem::ThreadStop(){
         m_pSocketMonitor->TerminateProcess();
         /* 2. 停止子线程处理                                                 */
         m_pSocketMonitorThread->Stop();
-        //m_//pSysLogger->Add(1, "<CChannelItem>Stop channel Thread succeed!");
+        printfs(1, "<CChannelItem>Stop channel Thread succeed!");
     }
 }
 

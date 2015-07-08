@@ -74,13 +74,14 @@ WDS_DBHelper::~WDS_DBHelper(void)
 /*
 int WDS_DBHelper::InsertTDQuality(st_BillingInfo* pInfo, int& out_STATUS)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertTDQuality()> Begin call InsertTDQuality()");
+    printfs(1,"<WDS_DBHelper::InsertTDQuality()> Begin call InsertTDQuality()");
     // 判断参数正确性
     if( NULL == pInfo){
         return 0;
     }
     // 构建调用存储过程所需参数字符串
     char chCondition[sizeof(st_BillingInfo) + strlen(SQL_PROC_PARA_TRADE_QUALITY)] = "\0";
+
     sprintf(chCondition,
             SQL_PROC_PARA_TRADE_QUALITY,
             pInfo->chTradeID,
@@ -101,7 +102,7 @@ int WDS_DBHelper::InsertTDQuality(st_BillingInfo* pInfo, int& out_STATUS)
     char chCallSPText[sizeof(st_BillingInfo) + strlen(SQL_PROC_PARA_TRADE_QUALITY) + strlen(CALL_PROC_SUBMIT_TRADE_QUALITY)] = "\0";
     sprintf(chCallSPText, CALL_PROC_SUBMIT_TRADE_QUALITY, chCondition);
     string sCallSPText = chCallSPText;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::InsertTDQuality()> call sql: %s", chCallSPText);
+    printfs(2,"<WDS_DBHelper::InsertTDQuality()> call sql: %s", chCallSPText);
 
     // 执行调用存储过程函数
     unsigned int nRet = 0;
@@ -109,7 +110,7 @@ int WDS_DBHelper::InsertTDQuality(st_BillingInfo* pInfo, int& out_STATUS)
                          (unsigned int)strlen(sCallSPText.c_str()));// 执行查询
         mysql_query(&mySQLClient, SQL_QUERY_CALL_OUTPUT);
     if ( nRet ) {
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertTDQuality()> Error query from database: %s",
+        printfs(0,"<WDS_DBHelper::InsertTDQuality()> Error query from database: %s",
                           mysql_error(&mySQLClient));
         return 0;
     }
@@ -124,13 +125,13 @@ int WDS_DBHelper::InsertTDQuality(st_BillingInfo* pInfo, int& out_STATUS)
             out_STATUS    = atoi(row[0]);
         }
         catch(...){
-            //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetCallTrackInfo()> Data error! ID: %d", atoi(row[0]));
+            printfs(0,"<WDS_DBHelper::GetCallTrackInfo()> Data error! ID: %d", atoi(row[0]));
             continue;
         }
     }
     mysql_free_result(res); //free result after you get the result
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertTDQuality()> Stop call InsertTDQuality()");
+    printfs(1,"<WDS_DBHelper::InsertTDQuality()> Stop call InsertTDQuality()");
     return 1;
 }
 */
@@ -143,13 +144,13 @@ int WDS_DBHelper::InsertTDQuality(st_BillingInfo* pInfo, int& out_STATUS)
 ******************************************************************************/
 int WDS_DBHelper::InsertRMS5001RealtimeAlert(stStationAlert* pInfo)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertRMS5001RealtimeAlert()> Begin call InsertRMS5001RealtimeAlert()");
+    printfs(1,"<WDS_DBHelper::InsertRMS5001RealtimeAlert()> Begin call InsertRMS5001RealtimeAlert()");
     // 判断参数正确性
     if( NULL == pInfo){
         return 0;
     }
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertRMS5001RealtimeAlert()> Stop call InsertRMS5001RealtimeAlert()");
+    printfs(1,"<WDS_DBHelper::InsertRMS5001RealtimeAlert()> Stop call InsertRMS5001RealtimeAlert()");
     return 1;
 }
 
@@ -161,13 +162,13 @@ int WDS_DBHelper::InsertRMS5001RealtimeAlert(stStationAlert* pInfo)
 ******************************************************************************/
 int WDS_DBHelper::InsertRMS1001RealtimeAlert(stStationAlert* pInfo)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertRMS1001RealtimeAlert()> Begin call InsertRMS1001RealtimeAlert()");
+    printfs(1,"<WDS_DBHelper::InsertRMS1001RealtimeAlert()> Begin call InsertRMS1001RealtimeAlert()");
     // 判断参数正确性
     if( NULL == pInfo){
         return 0;
     }
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertRMS1001RealtimeAlert()> Stop call InsertRMS1001RealtimeAlert()");
+    printfs(1,"<WDS_DBHelper::InsertRMS1001RealtimeAlert()> Stop call InsertRMS1001RealtimeAlert()");
     return 1;
 }
 
@@ -179,7 +180,7 @@ int WDS_DBHelper::InsertRMS1001RealtimeAlert(stStationAlert* pInfo)
 ******************************************************************************/
 int WDS_DBHelper::InsertRealtimeAlert(stStationAlert* pInfo, int nType, int *pStatus)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertRMSRealtimeAlert()> Begin call InsertRMSRealtimeAlert()");
+    printfs(1,"<WDS_DBHelper::InsertRMSRealtimeAlert()> Begin call InsertRMSRealtimeAlert()");
     // 判断参数正确性
     if( NULL == pInfo){
         return 0;
@@ -232,14 +233,14 @@ int WDS_DBHelper::InsertRealtimeAlert(stStationAlert* pInfo, int nType, int *pSt
     }
 
     string sSqlText = chCondition;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::InsertRMSRealtimeAlert()> Insert sql: %s", chCondition);
+    printfs(2,"<WDS_DBHelper::InsertRMSRealtimeAlert()> Insert sql: %s", chCondition);
     // 执行调用SQL函数
     bool bRet = runSQLCommand(sSqlText);
     if (!bRet){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertRMSRealtimeAlert()> Insert failed, sql: %s", chCondition);
+        printfs(0,"<WDS_DBHelper::InsertRMSRealtimeAlert()> Insert failed, sql: %s", chCondition);
     }
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertRMSRealtimeAlert()> Stop call InsertRMSRealtimeAlert()");
+    printfs(1,"<WDS_DBHelper::InsertRMSRealtimeAlert()> Stop call InsertRMSRealtimeAlert()");
     return bRet;
 }
 
@@ -251,7 +252,7 @@ int WDS_DBHelper::InsertRealtimeAlert(stStationAlert* pInfo, int nType, int *pSt
 ******************************************************************************/
 int WDS_DBHelper::InsertStationRealtimeStatus(stStationHeartBeat* pInfo)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertStationRealtimeStatus()> Begin call InsertStationRealtimeStatus()");
+    printfs(1,"<WDS_DBHelper::InsertStationRealtimeStatus()> Begin call InsertStationRealtimeStatus()");
     // 判断参数正确性
     if( NULL == pInfo){
         return 0;
@@ -260,28 +261,28 @@ int WDS_DBHelper::InsertStationRealtimeStatus(stStationHeartBeat* pInfo)
     // 取得硬盘状态字典CODE
     char chHDStatus[DICT_CODE_LENGTH + 1] = "\0";
     if(!GetDictCodebyValue(chHDStatus, DATA_DICT_HARD_DISK_STATUS, pInfo->nHDstatus)){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertStationRealtimeStatus()> No dict code found! HD type:%d", pInfo->nHDstatus);
+        printfs(0,"<WDS_DBHelper::InsertStationRealtimeStatus()> No dict code found! HD type:%d", pInfo->nHDstatus);
         return false;
     }
 
     // 取得测场视频状态字典CODE
     char chGeoFieldStatus[DICT_CODE_LENGTH + 1] = "\0";
     if(!GetDictCodebyValue(chGeoFieldStatus, DATA_DICT_VIDEO_STATUS, CheckRealtimeStatus(pInfo->cChannelStatus, 0x80))){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertStationRealtimeStatus()> No dict code found! cChannelStatus:%x", pInfo->cChannelStatus);
+        printfs(0,"<WDS_DBHelper::InsertStationRealtimeStatus()> No dict code found! cChannelStatus:%x", pInfo->cChannelStatus);
         return false;
     }
 
     // 取得值班室视频状态字典CODE
     char chOfficeStatus[DICT_CODE_LENGTH + 1] = "\0";
     if(!GetDictCodebyValue(chOfficeStatus, DATA_DICT_VIDEO_STATUS, CheckRealtimeStatus(pInfo->cChannelStatus, 0x40))){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertStationRealtimeStatus()> No dict code found! cChannelStatus:%x", pInfo->cChannelStatus);
+        printfs(0,"<WDS_DBHelper::InsertStationRealtimeStatus()> No dict code found! cChannelStatus:%x", pInfo->cChannelStatus);
         return false;
     }
 
     // 取得制氢室视频状态字典CODE
     char chHydrogenStatus[DICT_CODE_LENGTH + 1] = "\0";
     if(!GetDictCodebyValue(chHydrogenStatus, DATA_DICT_VIDEO_STATUS, CheckRealtimeStatus(pInfo->cChannelStatus, 0x20))){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertStationRealtimeStatus()> No dict code found! cChannelStatus:%x", pInfo->cChannelStatus);
+        printfs(0,"<WDS_DBHelper::InsertStationRealtimeStatus()> No dict code found! cChannelStatus:%x", pInfo->cChannelStatus);
         return false;
     }
 
@@ -299,14 +300,14 @@ int WDS_DBHelper::InsertStationRealtimeStatus(stStationHeartBeat* pInfo)
             pInfo->nFreeSpace);
 
     string sSqlText = chCondition;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::InsertStationRealtimeStatus()> Insert sql: %s", chCondition);
+    printfs(2,"<WDS_DBHelper::InsertStationRealtimeStatus()> Insert sql: %s", chCondition);
     // 执行调用SQL函数
     bool bRet = runSQLCommand(sSqlText);
     if (!bRet){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertStationRealtimeStatus()> Insert failed, sql: %s", chCondition);
+        printfs(0,"<WDS_DBHelper::InsertStationRealtimeStatus()> Insert failed, sql: %s", chCondition);
     }
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertStationRealtimeStatus()> Stop call InsertStationRealtimeStatus()");
+    printfs(1,"<WDS_DBHelper::InsertStationRealtimeStatus()> Stop call InsertStationRealtimeStatus()");
     return bRet;
 }
 
@@ -318,7 +319,7 @@ int WDS_DBHelper::InsertStationRealtimeStatus(stStationHeartBeat* pInfo)
 ******************************************************************************/
 int WDS_DBHelper::InsertElementsHourData(stElementsHourData* pInfo)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertElementsHourData()> Begin call InsertElementsHourData()");
+    printfs(1,"<WDS_DBHelper::InsertElementsHourData()> Begin call InsertElementsHourData()");
     // 判断参数正确性
     if( NULL == pInfo){
         return 0;
@@ -342,14 +343,14 @@ int WDS_DBHelper::InsertElementsHourData(stElementsHourData* pInfo)
             pInfo->fHumidity);
 
     string sSqlText = chCondition;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::InsertElementsHourData()> Insert sql: %s", chCondition);
+    printfs(2,"<WDS_DBHelper::InsertElementsHourData()> Insert sql: %s", chCondition);
     // 执行调用SQL函数
     bool bRet = runSQLCommand(sSqlText);
     if (!bRet){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertElementsHourData()> Insert failed, sql: %s", chCondition);
+        printfs(0,"<WDS_DBHelper::InsertElementsHourData()> Insert failed, sql: %s", chCondition);
     }
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertElementsHourData()> Stop call InsertElementsHourData()");
+    printfs(1,"<WDS_DBHelper::InsertElementsHourData()> Stop call InsertElementsHourData()");
     return bRet;
 }
 
@@ -361,7 +362,7 @@ int WDS_DBHelper::InsertElementsHourData(stElementsHourData* pInfo)
 ******************************************************************************/
 int WDS_DBHelper::DeleteElementsHourData(stElementsHourData* pInfo)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::DeleteElementsHourData()> Begin call DeleteElementsHourData()");
+    printfs(1,"<WDS_DBHelper::DeleteElementsHourData()> Begin call DeleteElementsHourData()");
     // 判断参数正确性
     if( NULL == pInfo){
         return 0;
@@ -376,14 +377,14 @@ int WDS_DBHelper::DeleteElementsHourData(stElementsHourData* pInfo)
             pInfo->cStationID);
 
     string sSqlText = chCondition;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::DeleteElementsHourData()> Delete sql: %s", chCondition);
+    printfs(2,"<WDS_DBHelper::DeleteElementsHourData()> Delete sql: %s", chCondition);
     // 执行调用SQL函数
     bool bRet = runSQLCommand(sSqlText);
     if (!bRet){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::DeleteElementsHourData()> Delete failed, sql: %s", chCondition);
+        printfs(0,"<WDS_DBHelper::DeleteElementsHourData()> Delete failed, sql: %s", chCondition);
     }
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::DeleteElementsHourData()> Stop call DeleteElementsHourData()");
+    printfs(1,"<WDS_DBHelper::DeleteElementsHourData()> Stop call DeleteElementsHourData()");
     return bRet;
 }
 
@@ -395,7 +396,7 @@ int WDS_DBHelper::DeleteElementsHourData(stElementsHourData* pInfo)
 ******************************************************************************/
 int WDS_DBHelper::InsertElementsMinuteData(stElementsMinuteData* pInfo)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertElementsMinuteData()> Begin call InsertElementsMinuteData()");
+    printfs(1,"<WDS_DBHelper::InsertElementsMinuteData()> Begin call InsertElementsMinuteData()");
     // 判断参数正确性
     if( NULL == pInfo){
         return 0;
@@ -415,14 +416,14 @@ int WDS_DBHelper::InsertElementsMinuteData(stElementsMinuteData* pInfo)
             pInfo->fHumidity);
 
     string sSqlText = chCondition;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::InsertElementsMinuteData()> Insert sql: %s", chCondition);
+    printfs(2,"<WDS_DBHelper::InsertElementsMinuteData()> Insert sql: %s", chCondition);
     // 执行调用SQL函数
     bool bRet = runSQLCommand(sSqlText);
     if (!bRet){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertElementsMinuteData()> Insert failed, sql: %s", chCondition);
+        printfs(0,"<WDS_DBHelper::InsertElementsMinuteData()> Insert failed, sql: %s", chCondition);
     }
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertElementsMinuteData()> Stop call InsertElementsMinuteData()");
+    printfs(1,"<WDS_DBHelper::InsertElementsMinuteData()> Stop call InsertElementsMinuteData()");
     return bRet;
 }
 
@@ -434,7 +435,7 @@ int WDS_DBHelper::InsertElementsMinuteData(stElementsMinuteData* pInfo)
 ******************************************************************************/
 int WDS_DBHelper::InsertRealtimeWeatherReport(stRealtimeWeatherReport* pInfo)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertRealtimeWeatherReport()> Begin call InsertRealtimeWeatherReport()");
+    printfs(1,"<WDS_DBHelper::InsertRealtimeWeatherReport()> Begin call InsertRealtimeWeatherReport()");
     // 判断参数正确性
     if( NULL == pInfo){
         return 0;
@@ -443,19 +444,19 @@ int WDS_DBHelper::InsertRealtimeWeatherReport(stRealtimeWeatherReport* pInfo)
     char chEventNo[DICT_CODE_LENGTH + 1] = "\0";
     char chVisibility[DICT_CODE_LENGTH + 1] = "\0";
     if(!GetDictCodebyValue(chEventNo, DATA_DICT_WEATHER_STATUS, pInfo->nEventNo)){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertRealtimeWeatherReport()> No dict code found! event_no:%d", pInfo->nEventNo);
+        printfs(0,"<WDS_DBHelper::InsertRealtimeWeatherReport()> No dict code found! event_no:%d", pInfo->nEventNo);
         return false;
     }
 
     if(pInfo->nEventNo == WEATHER_STATUS_DUST){
         if(!GetDictCodebyRange(chVisibility, DATA_DICT_DUST_STATUS, pInfo->nVisibility)){
-            //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertRealtimeWeatherReport()> No dict code found! event_no:%d", pInfo->nVisibility);
+            printfs(0,"<WDS_DBHelper::InsertRealtimeWeatherReport()> No dict code found! event_no:%d", pInfo->nVisibility);
             return false;
         }
     }
     else if(pInfo->nEventNo == WEATHER_STATUS_FOG){
         if(!GetDictCodebyRange(chVisibility, DATA_DICT_FOG_STATUS, pInfo->nVisibility)){
-            //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertRealtimeWeatherReport()> No dict code found! event_no:%d", pInfo->nVisibility);
+            printfs(0,"<WDS_DBHelper::InsertRealtimeWeatherReport()> No dict code found! event_no:%d", pInfo->nVisibility);
             return false;
         }
     }
@@ -478,14 +479,14 @@ int WDS_DBHelper::InsertRealtimeWeatherReport(stRealtimeWeatherReport* pInfo)
             nUnknownTime);
 
     string sSqlText = chCondition;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::InsertElementsMinuteData()> Insert sql: %s", chCondition);
+    printfs(2,"<WDS_DBHelper::InsertElementsMinuteData()> Insert sql: %s", chCondition);
     // 执行调用SQL函数
     bool bRet = runSQLCommand(sSqlText);
     if (!bRet){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertElementsMinuteData()> Insert failed, sql: %s", chCondition);
+        printfs(0,"<WDS_DBHelper::InsertElementsMinuteData()> Insert failed, sql: %s", chCondition);
     }
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertRealtimeWeatherReport()> Stop call InsertRealtimeWeatherReport()");
+    printfs(1,"<WDS_DBHelper::InsertRealtimeWeatherReport()> Stop call InsertRealtimeWeatherReport()");
     return bRet;
 }
 
@@ -497,7 +498,7 @@ int WDS_DBHelper::InsertRealtimeWeatherReport(stRealtimeWeatherReport* pInfo)
 ******************************************************************************/
 int WDS_DBHelper::InsertStationImage(stStationImage* pInfo, long lId)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertStationImage()> Begin call InsertStationImage()");
+    printfs(1,"<WDS_DBHelper::InsertStationImage()> Begin call InsertStationImage()");
     // 判断参数正确性
     if( NULL == pInfo){
         return 0;
@@ -513,14 +514,14 @@ int WDS_DBHelper::InsertStationImage(stStationImage* pInfo, long lId)
             pInfo->cDirection);
 
     string sSqlText = chCondition;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::InsertStationImage()> Insert sql: %s", chCondition);
+    printfs(2,"<WDS_DBHelper::InsertStationImage()> Insert sql: %s", chCondition);
     // 执行调用SQL函数
     bool bRet = runSQLCommand(sSqlText);
     if (!bRet){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertStationImage()> Insert failed, sql: %s", chCondition);
+        printfs(0,"<WDS_DBHelper::InsertStationImage()> Insert failed, sql: %s", chCondition);
     }
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertStationImage()> Stop call InsertStationImage()");
+    printfs(1,"<WDS_DBHelper::InsertStationImage()> Stop call InsertStationImage()");
     return bRet;
 }
 
@@ -532,7 +533,7 @@ int WDS_DBHelper::InsertStationImage(stStationImage* pInfo, long lId)
 ******************************************************************************/
 int WDS_DBHelper::InsertImageFile(char* pFilePath, char* pFileName, char* pFileOriginalName, char* pTime)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertImageFile()> Begin call InsertImageFile()");
+    printfs(1,"<WDS_DBHelper::InsertImageFile()> Begin call InsertImageFile()");
 
     // 构建调用SQL语句所需参数字符串
     char chCondition[3 * MAX_FILEPATH_LENGTH + DATE_TIME_LENGTH + 1] = "\0";
@@ -544,14 +545,14 @@ int WDS_DBHelper::InsertImageFile(char* pFilePath, char* pFileName, char* pFileO
             pTime);
 
     string sSqlText = chCondition;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::InsertImageFile()> Insert sql: %s", chCondition);
+    printfs(2,"<WDS_DBHelper::InsertImageFile()> Insert sql: %s", chCondition);
     // 执行调用SQL函数
     bool bRet = runSQLCommand(sSqlText);
     if (!bRet){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::InsertImageFile()> Insert failed, sql: %s", chCondition);
+        printfs(0,"<WDS_DBHelper::InsertImageFile()> Insert failed, sql: %s", chCondition);
     }
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::InsertImageFile()> Stop call InsertImageFile()");
+    printfs(1,"<WDS_DBHelper::InsertImageFile()> Stop call InsertImageFile()");
     return bRet;
 }
 
@@ -566,7 +567,7 @@ int WDS_DBHelper::InsertImageFile(char* pFilePath, char* pFileName, char* pFileO
 ******************************************************************************/
 int WDS_DBHelper::UpdateStationRealtimeStatus(stStationHeartBeat* pInfo)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::UpdateStationRealtimeStatus()> Begin call UpdateStationRealtimeStatus()");
+    printfs(1,"<WDS_DBHelper::UpdateStationRealtimeStatus()> Begin call UpdateStationRealtimeStatus()");
     // 判断参数正确性
     if( NULL == pInfo){
         return 0;
@@ -575,28 +576,28 @@ int WDS_DBHelper::UpdateStationRealtimeStatus(stStationHeartBeat* pInfo)
     // 取得硬盘状态字典CODE
     char chHDStatus[DICT_CODE_LENGTH + 1] = "\0";
     if(!GetDictCodebyValue(chHDStatus, DATA_DICT_HARD_DISK_STATUS, pInfo->nHDstatus)){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::UpdateStationRealtimeStatus()> No dict code found! HD type:%d", pInfo->nHDstatus);
+        printfs(0,"<WDS_DBHelper::UpdateStationRealtimeStatus()> No dict code found! HD type:%d", pInfo->nHDstatus);
         return false;
     }
 
     // 取得测场视频状态字典CODE
     char chGeoFieldStatus[DICT_CODE_LENGTH + 1] = "\0";
     if(!GetDictCodebyValue(chGeoFieldStatus, DATA_DICT_VIDEO_STATUS, CheckRealtimeStatus(pInfo->cChannelStatus, 0x80))){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::UpdateStationRealtimeStatus()> No dict code found! cChannelStatus:%x", pInfo->cChannelStatus);
+        printfs(0,"<WDS_DBHelper::UpdateStationRealtimeStatus()> No dict code found! cChannelStatus:%x", pInfo->cChannelStatus);
         return false;
     }
 
     // 取得值班室视频状态字典CODE
     char chOfficeStatus[DICT_CODE_LENGTH + 1] = "\0";
     if(!GetDictCodebyValue(chOfficeStatus, DATA_DICT_VIDEO_STATUS, CheckRealtimeStatus(pInfo->cChannelStatus, 0x40))){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::UpdateStationRealtimeStatus()> No dict code found! cChannelStatus:%x", pInfo->cChannelStatus);
+        printfs(0,"<WDS_DBHelper::UpdateStationRealtimeStatus()> No dict code found! cChannelStatus:%x", pInfo->cChannelStatus);
         return false;
     }
 
     // 取得制氢室视频状态字典CODE
     char chHydrogenStatus[DICT_CODE_LENGTH + 1] = "\0";
     if(!GetDictCodebyValue(chHydrogenStatus, DATA_DICT_VIDEO_STATUS, CheckRealtimeStatus(pInfo->cChannelStatus, 0x20))){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::UpdateStationRealtimeStatus()> No dict code found! cChannelStatus:%x", pInfo->cChannelStatus);
+        printfs(0,"<WDS_DBHelper::UpdateStationRealtimeStatus()> No dict code found! cChannelStatus:%x", pInfo->cChannelStatus);
         return false;
     }
 
@@ -615,14 +616,14 @@ int WDS_DBHelper::UpdateStationRealtimeStatus(stStationHeartBeat* pInfo)
             pInfo->cCurTime);
 
     string sSqlText = chCondition;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::UpdateStationRealtimeStatus()> Update sql: %s", chCondition);
+    printfs(2,"<WDS_DBHelper::UpdateStationRealtimeStatus()> Update sql: %s", chCondition);
     // 执行调用SQL函数
     bool bRet = runSQLCommand(sSqlText);
     if (!bRet){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::UpdateStationRealtimeStatus()> Insert failed, sql: %s", chCondition);
+        printfs(0,"<WDS_DBHelper::UpdateStationRealtimeStatus()> Insert failed, sql: %s", chCondition);
     }
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::UpdateStationRealtimeStatus()> Stop call UpdateStationRealtimeStatus()");
+    printfs(1,"<WDS_DBHelper::UpdateStationRealtimeStatus()> Stop call UpdateStationRealtimeStatus()");
     return bRet;
 }
 
@@ -634,7 +635,7 @@ int WDS_DBHelper::UpdateStationRealtimeStatus(stStationHeartBeat* pInfo)
 ******************************************************************************/
 int WDS_DBHelper::UpdateElementsMinuteData(stElementsMinuteData* pInfo)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::UpdateElementsMinuteData()> Begin call UpdateElementsMinuteData()");
+    printfs(1,"<WDS_DBHelper::UpdateElementsMinuteData()> Begin call UpdateElementsMinuteData()");
     // 判断参数正确性
     if( NULL == pInfo){
         return 0;
@@ -654,14 +655,14 @@ int WDS_DBHelper::UpdateElementsMinuteData(stElementsMinuteData* pInfo)
             pInfo->cStationID);
 
     string sSqlText = chCondition;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::UpdateElementsMinuteData()> Update sql: %s", chCondition);
+    printfs(2,"<WDS_DBHelper::UpdateElementsMinuteData()> Update sql: %s", chCondition);
     // 执行调用SQL函数
     bool bRet = runSQLCommand(sSqlText);
     if (!bRet){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::UpdateElementsMinuteData()> Insert failed, sql: %s", chCondition);
+        printfs(0,"<WDS_DBHelper::UpdateElementsMinuteData()> Insert failed, sql: %s", chCondition);
     }
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::UpdateElementsMinuteData()> Stop call UpdateElementsMinuteData()");
+    printfs(1,"<WDS_DBHelper::UpdateElementsMinuteData()> Stop call UpdateElementsMinuteData()");
     return bRet;
 }
 
@@ -673,7 +674,7 @@ int WDS_DBHelper::UpdateElementsMinuteData(stElementsMinuteData* pInfo)
 ******************************************************************************/
 int WDS_DBHelper::UpdateRealtimeWeatherReport(stRealtimeWeatherReport* pInfo, int nId)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::UpdateRealtimeWeatherReport()> Begin call UpdateRealtimeWeatherReport()");
+    printfs(1,"<WDS_DBHelper::UpdateRealtimeWeatherReport()> Begin call UpdateRealtimeWeatherReport()");
     // 判断参数正确性
     if( NULL == pInfo){
         return 0;
@@ -693,14 +694,14 @@ int WDS_DBHelper::UpdateRealtimeWeatherReport(stRealtimeWeatherReport* pInfo, in
             nId);
 
     string sSqlText = chCondition;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::UpdateRealtimeWeatherReport()> Update sql: %s", chCondition);
+    printfs(2,"<WDS_DBHelper::UpdateRealtimeWeatherReport()> Update sql: %s", chCondition);
     // 执行调用SQL函数
     bool bRet = runSQLCommand(sSqlText);
     if (!bRet){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::UpdateRealtimeWeatherReport()> Insert failed, sql: %s", chCondition);
+        printfs(0,"<WDS_DBHelper::UpdateRealtimeWeatherReport()> Insert failed, sql: %s", chCondition);
     }
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::UpdateRealtimeWeatherReport()> Stop call UpdateRealtimeWeatherReport()");
+    printfs(1,"<WDS_DBHelper::UpdateRealtimeWeatherReport()> Stop call UpdateRealtimeWeatherReport()");
     return bRet;
 }
 
@@ -715,19 +716,18 @@ int WDS_DBHelper::UpdateRealtimeWeatherReport(stRealtimeWeatherReport* pInfo, in
 ******************************************************************************/
 int WDS_DBHelper::GetElementsMinuteDataCount(char* chCondition, int& nCount)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetElementsMinuteDataCount()> Begin call GetElementsMinuteDataCount()");
+    printfs(1,"<WDS_DBHelper::GetElementsMinuteDataCount()> Begin call GetElementsMinuteDataCount()");
     char chQueryText[strlen(SQL_QUERY_ELEMENTS_MINUTE_DATA) + STATION_ID_LENGTH + 1] = "\0";
     sprintf(chQueryText, SQL_QUERY_ELEMENTS_MINUTE_DATA, chCondition);
 
     string sQeryText = chQueryText;
     // 执行查询函数
     unsigned int nRet = 0;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::GetElementsMinuteDataCount()> Query sql: %s", chQueryText);
+    printfs(2,"<WDS_DBHelper::GetElementsMinuteDataCount()> Query sql: %s", chQueryText);
     nRet = mysql_real_query(m_pSQLClient,sQeryText.c_str(),
                          (unsigned int)strlen(sQeryText.c_str()));// 执行查询
     if ( nRet ) {
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetElementsMinuteDataCount()> Error query from database: %s",
-        //                  mysql_error(m_pSQLClient));
+        printfs(0,"<WDS_DBHelper::GetElementsMinuteDataCount()> Error query from database: %s",mysql_error(m_pSQLClient));
         return false;
     }
     MYSQL_RES *res;
@@ -741,13 +741,13 @@ int WDS_DBHelper::GetElementsMinuteDataCount(char* chCondition, int& nCount)
             nCount    = atoi(row[0]);
         }
         catch(...){
-            //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetElementsMinuteDataCount()> Data query error!");
+            printfs(0,"<WDS_DBHelper::GetElementsMinuteDataCount()> Data query error!");
             continue;
         }
     }
     mysql_free_result(res); //free result after you get the result
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetElementsMinuteDataCount()> Stop call GetElementsMinuteDataCount()");
+    printfs(1,"<WDS_DBHelper::GetElementsMinuteDataCount()> Stop call GetElementsMinuteDataCount()");
     return true;
 }
 
@@ -759,7 +759,7 @@ int WDS_DBHelper::GetElementsMinuteDataCount(char* chCondition, int& nCount)
 ******************************************************************************/
 int WDS_DBHelper::GetStationRealtimeAlertCount(char* chCondition, int nType, int& nCount)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetStationRealtimeAlertCount()> Begin call GetStationRealtimeAlertCount()");
+    printfs(1,"<WDS_DBHelper::GetStationRealtimeAlertCount()> Begin call GetStationRealtimeAlertCount()");
     char chQueryText[strlen(SQL_QUERY_1001_ALERT_COUNT) + STATION_ID_LENGTH + 1] = "\0";
     if (nType == INFO_TYPE_RMS1001_REALTIME_ALERT){
         sprintf(chQueryText, SQL_QUERY_1001_ALERT_COUNT, chCondition);
@@ -770,12 +770,11 @@ int WDS_DBHelper::GetStationRealtimeAlertCount(char* chCondition, int nType, int
     string sQeryText = chQueryText;
     // 执行查询函数
     unsigned int nRet = 0;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::GetStationRealtimeAlertCount()> Query sql: %s", chQueryText);
+    printfs(2,"<WDS_DBHelper::GetStationRealtimeAlertCount()> Query sql: %s", chQueryText);
     nRet = mysql_real_query(m_pSQLClient,sQeryText.c_str(),
                          (unsigned int)strlen(sQeryText.c_str()));// 执行查询
     if ( nRet ) {
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetStationRealtimeAlertCount()> Error query from database: %s",
-                        //  mysql_error(m_pSQLClient));
+        printfs(0,"<WDS_DBHelper::GetStationRealtimeAlertCount()> Error query from database: %s",mysql_error(m_pSQLClient));
         return false;
     }
     MYSQL_RES *res;
@@ -789,13 +788,13 @@ int WDS_DBHelper::GetStationRealtimeAlertCount(char* chCondition, int nType, int
             nCount    = atoi(row[0]);
         }
         catch(...){
-            //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetStationRealtimeAlertCount()> Data query error!");
+            printfs(0,"<WDS_DBHelper::GetStationRealtimeAlertCount()> Data query error!");
             continue;
         }
     }
     mysql_free_result(res); //free result after you get the result
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetStationRealtimeAlertCount()> Stop call GetStationRealtimeAlertCount()");
+    printfs(1,"<WDS_DBHelper::GetStationRealtimeAlertCount()> Stop call GetStationRealtimeAlertCount()");
     return true;
 }
 
@@ -811,7 +810,7 @@ int WDS_DBHelper::GetStationNealyAlertStatus(char* chCondition, int nType, int *
         return false;
     }
     memset(pStatus, 0, 8 * sizeof(int));
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetStationNealyAlertStatus()> Begin call GetStationNealyAlertStatus()");
+    printfs(1,"<WDS_DBHelper::GetStationNealyAlertStatus()> Begin call GetStationNealyAlertStatus()");
     char chQueryText[strlen(SQL_QUERY_1001_NEALY_ALARM) + STATION_ID_LENGTH + 1] = "\0";
     if (nType == INFO_TYPE_RMS1001_REALTIME_ALERT){
         sprintf(chQueryText, SQL_QUERY_1001_NEALY_ALARM, chCondition);
@@ -822,12 +821,11 @@ int WDS_DBHelper::GetStationNealyAlertStatus(char* chCondition, int nType, int *
     string sQeryText = chQueryText;
     // 执行查询函数
     unsigned int nRet = 0;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::GetStationNealyAlertStatus()> Query sql: %s", chQueryText);
+    printfs(2,"<WDS_DBHelper::GetStationNealyAlertStatus()> Query sql: %s", chQueryText);
     nRet = mysql_real_query(m_pSQLClient,sQeryText.c_str(),
                          (unsigned int)strlen(sQeryText.c_str()));// 执行查询
     if ( nRet ) {
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetStationNealyAlertStatus()> Error query from database: %s",
-                  //        mysql_error(m_pSQLClient));
+        printfs(0,"<WDS_DBHelper::GetStationNealyAlertStatus()> Error query from database: %s",mysql_error(m_pSQLClient));
         return false;
     }
     MYSQL_RES *res;
@@ -847,13 +845,13 @@ int WDS_DBHelper::GetStationNealyAlertStatus(char* chCondition, int nType, int *
             pStatus[7] = atoi(row[7]);
         }
         catch(...){
-            //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetStationNealyAlertStatus()> Data query error!");
+            printfs(0,"<WDS_DBHelper::GetStationNealyAlertStatus()> Data query error!");
             continue;
         }
     }
     mysql_free_result(res); //free result after you get the result
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetStationNealyAlertStatus()> Stop call GetStationNealyAlertStatus()");
+    printfs(1,"<WDS_DBHelper::GetStationNealyAlertStatus()> Stop call GetStationNealyAlertStatus()");
     return true;
 }
 
@@ -865,19 +863,18 @@ int WDS_DBHelper::GetStationNealyAlertStatus(char* chCondition, int nType, int *
 ******************************************************************************/
 int WDS_DBHelper::GetStationRealtimeStatusCount(char* chCondition1, char* chCondition2, int& nCount)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetStationRealtimeStatusCount()> Begin call GetStationRealtimeStatusCount()");
+    printfs(1,"<WDS_DBHelper::GetStationRealtimeStatusCount()> Begin call GetStationRealtimeStatusCount()");
     char chQueryText[strlen(SQL_QUERY_STATION_REALTIME_STATUS) + STATION_ID_LENGTH + DATE_TIME_LENGTH + 1] = "\0";
     sprintf(chQueryText, SQL_QUERY_STATION_REALTIME_STATUS, chCondition1, chCondition2);
 
     string sQeryText = chQueryText;
     // 执行查询函数
     unsigned int nRet = 0;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::GetStationRealtimeStatusCount()> Query sql: %s", chQueryText);
+    printfs(2,"<WDS_DBHelper::GetStationRealtimeStatusCount()> Query sql: %s", chQueryText);
     nRet = mysql_real_query(m_pSQLClient,sQeryText.c_str(),
                          (unsigned int)strlen(sQeryText.c_str()));// 执行查询
     if ( nRet ) {
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetStationRealtimeStatusCount()> Error query from database: %s",
-                     //     mysql_error(m_pSQLClient));
+        printfs(0,"<WDS_DBHelper::GetStationRealtimeStatusCount()> Error query from database: %s",mysql_error(m_pSQLClient));
         return false;
     }
     MYSQL_RES *res;
@@ -891,13 +888,13 @@ int WDS_DBHelper::GetStationRealtimeStatusCount(char* chCondition1, char* chCond
             nCount    = atoi(row[0]);
         }
         catch(...){
-            //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetStationRealtimeStatusCount()> Data query error!");
+            printfs(0,"<WDS_DBHelper::GetStationRealtimeStatusCount()> Data query error!");
             continue;
         }
     }
     mysql_free_result(res); //free result after you get the result
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetStationRealtimeStatusCount()> Stop call GetStationRealtimeStatusCount()");
+    printfs(1,"<WDS_DBHelper::GetStationRealtimeStatusCount()> Stop call GetStationRealtimeStatusCount()");
     return true;
 }
 
@@ -909,11 +906,11 @@ int WDS_DBHelper::GetStationRealtimeStatusCount(char* chCondition1, char* chCond
 ******************************************************************************/
 int WDS_DBHelper::GetMaxWeatherReportID(stRealtimeWeatherReport* pInfo, int& nId)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetMaxWeatherReportID()> Begin call GetMaxWeatherReportID()");
+    printfs(1,"<WDS_DBHelper::GetMaxWeatherReportID()> Begin call GetMaxWeatherReportID()");
     char chQueryText[strlen(SQL_QUERY_REALTIME_WEATHER) + sizeof(stRealtimeWeatherReport) + 1] = "\0";
     char chCode[DICT_CODE_LENGTH+1] = "\0";
     if(!GetDictCodebyValue(chCode, DATA_DICT_WEATHER_STATUS, pInfo->nEventNo)){
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetMaxWeatherReportID()> No dict code found! event_no:%d", pInfo->nEventNo);
+        printfs(0,"<WDS_DBHelper::GetMaxWeatherReportID()> No dict code found! event_no:%d", pInfo->nEventNo);
         return false;
     }
 
@@ -925,12 +922,11 @@ int WDS_DBHelper::GetMaxWeatherReportID(stRealtimeWeatherReport* pInfo, int& nId
     string sQeryText = chQueryText;
     // 执行查询函数
     unsigned int nRet = 0;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::GetMaxWeatherReportID()> Query sql: %s", chQueryText);
+    printfs(2,"<WDS_DBHelper::GetMaxWeatherReportID()> Query sql: %s", chQueryText);
     nRet = mysql_real_query(m_pSQLClient,sQeryText.c_str(),
                          (unsigned int)sQeryText.size());// 执行查询
     if ( nRet ) {
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetMaxWeatherReportID()> Error query from database: %s",
-             //             mysql_error(m_pSQLClient));
+        printfs(0,"<WDS_DBHelper::GetMaxWeatherReportID()> Error query from database: %s",mysql_error(m_pSQLClient));
         return false;
     }
     MYSQL_RES *res;
@@ -945,13 +941,13 @@ int WDS_DBHelper::GetMaxWeatherReportID(stRealtimeWeatherReport* pInfo, int& nId
             }
         }
         catch(...){
-            //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetMaxWeatherReportID()> Data query error!");
+            printfs(0,"<WDS_DBHelper::GetMaxWeatherReportID()> Data query error!");
             continue;
         }
     }
     mysql_free_result(res); //free result after you get the result
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetMaxWeatherReportID()> Stop call GetMaxWeatherReportID()");
+    printfs(1,"<WDS_DBHelper::GetMaxWeatherReportID()> Stop call GetMaxWeatherReportID()");
     return true;
 }
 
@@ -963,7 +959,7 @@ int WDS_DBHelper::GetMaxWeatherReportID(stRealtimeWeatherReport* pInfo, int& nId
 ******************************************************************************/
 int WDS_DBHelper::GetImageFileID(char* pFileName, char* pFilePath, long& lId)
 {
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetImageFileID()> Begin call GetImageFileID()");
+    printfs(1,"<WDS_DBHelper::GetImageFileID()> Begin call GetImageFileID()");
     char chQueryText[strlen(SQL_QUERY_IMAGE_FILE_ID) + 2 * MAX_FILEPATH_LENGTH + 1] = "\0";
     sprintf(chQueryText, 
             SQL_QUERY_IMAGE_FILE_ID, 
@@ -973,12 +969,11 @@ int WDS_DBHelper::GetImageFileID(char* pFileName, char* pFilePath, long& lId)
     string sQeryText = chQueryText;
     // 执行查询函数
     unsigned int nRet = 0;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::GetImageFileID()> Query sql: %s", chQueryText);
+    printfs(2,"<WDS_DBHelper::GetImageFileID()> Query sql: %s", chQueryText);
     nRet = mysql_real_query(m_pSQLClient,sQeryText.c_str(),
                          (unsigned int)sQeryText.size());// 执行查询
     if ( nRet ) {
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetImageFileID()> Error query from database: %s",
-                   //       mysql_error(m_pSQLClient));
+        printfs(0,"<WDS_DBHelper::GetImageFileID()> Error query from database: %s",mysql_error(m_pSQLClient));
         return false;
     }
     MYSQL_RES *res;
@@ -993,13 +988,13 @@ int WDS_DBHelper::GetImageFileID(char* pFileName, char* pFilePath, long& lId)
             }
         }
         catch(...){
-            //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetImageFileID()> Data query error!");
+            printfs(0,"<WDS_DBHelper::GetImageFileID()> Data query error!");
             continue;
         }
     }
     mysql_free_result(res); //free result after you get the result
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetImageFileID()> Stop call GetImageFileID()");
+    printfs(1,"<WDS_DBHelper::GetImageFileID()> Stop call GetImageFileID()");
     return true;
 }
 
@@ -1021,19 +1016,18 @@ int WDS_DBHelper::GetDictCodebyRange(char* chCode, char* chType, int nValue)
     if(chCode == NULL){
         return false;
     }
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetDictCodebyRange()> Begin call GetDictCodebyRange()");
+    printfs(1,"<WDS_DBHelper::GetDictCodebyRange()> Begin call GetDictCodebyRange()");
     char chQueryText[strlen(SQL_QUERY_DATA_DICT_BY_RANGE) + DICT_CODE_LENGTH + 1] = "\0";
     sprintf(chQueryText, SQL_QUERY_DATA_DICT_BY_RANGE, chType);
 
     string sQeryText = chQueryText;
     // 执行查询函数
     unsigned int nRet = 0;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::GetDictCodebyRange()> Query sql: %s", chQueryText);
+    printfs(2,"<WDS_DBHelper::GetDictCodebyRange()> Query sql: %s", chQueryText);
     nRet = mysql_real_query(m_pSQLClient,sQeryText.c_str(),
                          (unsigned int)strlen(sQeryText.c_str()));// 执行查询
     if ( nRet ) {
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetDictCodebyRange()> Error query from database: %s",
-                      //    mysql_error(m_pSQLClient));
+        printfs(0,"<WDS_DBHelper::GetDictCodebyRange()> Error query from database: %s",mysql_error(m_pSQLClient));
         return false;
     }
     MYSQL_RES *res;
@@ -1061,13 +1055,13 @@ int WDS_DBHelper::GetDictCodebyRange(char* chCode, char* chType, int nValue)
             }
         }
         catch(...){
-            //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetDictCodebyRange()> Data query error!");
+            printfs(0,"<WDS_DBHelper::GetDictCodebyRange()> Data query error!");
             continue;
         }
     }
     mysql_free_result(res); //free result after you get the result
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetDictCodebyRange()> Stop call GetDictCodebyRange()");
+    printfs(1,"<WDS_DBHelper::GetDictCodebyRange()> Stop call GetDictCodebyRange()");
     return true;
 }
 
@@ -1082,7 +1076,7 @@ int WDS_DBHelper::GetDictCodebyValue(char* chCode, char* chType, int nValue)
     if(chCode == NULL){
         return false;
     }
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetDictCodebyValue()> Begin call GetDictCodebyValue()");
+    printfs(1,"<WDS_DBHelper::GetDictCodebyValue()> Begin call GetDictCodebyValue()");
     char chQueryText[strlen(SQL_QUERY_DATA_DICT_BY_VALUE) + DICT_TYPE_LENGTH + sizeof(nValue) + 1] = "\0";
 
     sprintf(chQueryText, SQL_QUERY_DATA_DICT_BY_VALUE, chType, nValue);
@@ -1090,12 +1084,11 @@ int WDS_DBHelper::GetDictCodebyValue(char* chCode, char* chType, int nValue)
     string sQeryText = chQueryText;
     // 执行查询函数
     unsigned int nRet = 0;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::GetDictCodebyValue()> Query sql: %s", chQueryText);
+    printfs(2,"<WDS_DBHelper::GetDictCodebyValue()> Query sql: %s", chQueryText);
     nRet = mysql_real_query(m_pSQLClient,sQeryText.c_str(),
                          (unsigned int)strlen(sQeryText.c_str()));// 执行查询
     if ( nRet ) {
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetDictCodebyValue()> Error query from database: %s",
-                      //    mysql_error(m_pSQLClient));
+        printfs(0,"<WDS_DBHelper::GetDictCodebyValue()> Error query from database: %s",mysql_error(m_pSQLClient));
         return false;
     }
     MYSQL_RES *res;
@@ -1108,13 +1101,13 @@ int WDS_DBHelper::GetDictCodebyValue(char* chCode, char* chType, int nValue)
             memcpy(chCode, row[0], DICT_CODE_LENGTH);
         }
         catch(...){
-            //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetDictCodebyValue()> Data query error!");
+            printfs(0,"<WDS_DBHelper::GetDictCodebyValue()> Data query error!");
             continue;
         }
     }
     mysql_free_result(res); //free result after you get the result
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetDictCodebyValue()> Stop call GetDictCodebyValue()");
+    printfs(1,"<WDS_DBHelper::GetDictCodebyValue()> Stop call GetDictCodebyValue()");
     return true;
 }
 
@@ -1129,19 +1122,19 @@ int WDS_DBHelper::GetSysConfigValuebyCode(char* chCode, char* chValue)
     if(chValue == NULL){
         return false;
     }
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetSysConfigValuebyCode()> Begin call GetSysConfigValuebyCode()");
+    printfs(1,"<WDS_DBHelper::GetSysConfigValuebyCode()> Begin call GetSysConfigValuebyCode()");
     char chQueryText[strlen(SQL_QUERY_SYSTEM_CONFIG_BY_VALUE) + DICT_CODE_LENGTH + 1] = "\0";
     sprintf(chQueryText, SQL_QUERY_SYSTEM_CONFIG_BY_VALUE, chCode);
 
     string sQeryText = chQueryText;
     // 执行查询函数
     unsigned int nRet = 0;
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::GetSysConfigValuebyCode()> Query sql: %s", chQueryText);
+    printfs(2,"<WDS_DBHelper::GetSysConfigValuebyCode()> Query sql: %s", chQueryText);
     nRet = mysql_real_query(m_pSQLClient,sQeryText.c_str(),
                          (unsigned int)strlen(sQeryText.c_str()));// 执行查询
     if ( nRet ) {
-        //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetSysConfigValuebyCode()> Error query from database: %s",
-                     //     mysql_error(m_pSQLClient));
+        printfs(0,"<WDS_DBHelper::GetSysConfigValuebyCode()> Error query from database: %s",
+mysql_error(m_pSQLClient));
         return false;
     }
     MYSQL_RES *res;
@@ -1154,13 +1147,13 @@ int WDS_DBHelper::GetSysConfigValuebyCode(char* chCode, char* chValue)
             memcpy(chValue, row[0], DICT_VALUE_LENGTH);
         }
         catch(...){
-            //m_//pSysLogger->Add(0,"<WDS_DBHelper::GetSysConfigValuebyCode()> Data query error!");
+            printfs(0,"<WDS_DBHelper::GetSysConfigValuebyCode()> Data query error!");
             continue;
         }
     }
     mysql_free_result(res); //free result after you get the result
 
-    //m_//pSysLogger->Add(1,"<WDS_DBHelper::GetSysConfigValuebyCode()> Stop call GetSysConfigValuebyCode()");
+    printfs(1,"<WDS_DBHelper::GetSysConfigValuebyCode()> Stop call GetSysConfigValuebyCode()");
     return true;
 }
 
@@ -1172,7 +1165,7 @@ int WDS_DBHelper::GetSysConfigValuebyCode(char* chCode, char* chValue)
 ******************************************************************************/
 int WDS_DBHelper::IsUnknownTime(char* pTime, char* pTempTime)
 {
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::IsUnknownTime()> Input time :%s", pTime);
+    printfs(2,"<WDS_DBHelper::IsUnknownTime()> Input time :%s", pTime);
     int nYear   = 0;
     int nMonth  = 0;
     int nDay    = 0;
@@ -1180,7 +1173,7 @@ int WDS_DBHelper::IsUnknownTime(char* pTime, char* pTempTime)
     int nMinute = 0;
     int nSecond = 0;
     sscanf(pTime, "%d-%d-%d %d:%d:%d", &nYear, &nMonth, &nDay, &nHour, &nMinute, &nSecond);
-    //m_//pSysLogger->Add(2,"<WDS_DBHelper::IsUnknownTime()> Input time :Year[%d], Month[%d], Day[%d], Hour[%d], Minute[%d], Second[%d]", nYear, nMonth, nDay, nHour, nMinute, nSecond);
+    printfs(2,"<WDS_DBHelper::IsUnknownTime()> Input time :Year[%d], Month[%d], Day[%d], Hour[%d], Minute[%d], Second[%d]", nYear, nMonth, nDay, nHour, nMinute, nSecond);
     if ((nHour == 77) && (nMinute == 88)){
         sprintf(pTempTime, "%04d-%02d-%02d %02d:%02d:%02d", nYear, nMonth, nDay, 0, 0, 0);
         return 1;

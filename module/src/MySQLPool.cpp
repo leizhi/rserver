@@ -41,17 +41,17 @@ bool CMySQLPool::ConnectDB(int nCount)
                 my_bool auto_reconnect = 1;
                 mysql_options(pMySql, MYSQL_OPT_RECONNECT, &auto_reconnect);
                 if (!mysql_real_connect(pMySql,m_host,m_user,m_password,m_db,m_port,NULL,CLIENT_MULTI_STATEMENTS|CLIENT_INTERACTIVE)){
-                    //m_//pSysLogger->Add(0,"<CMySQLPool::ConnectDB()> Error connection to database: %s!", mysql_error(pMySql));
+                    printfs(0,"<CMySQLPool::ConnectDB()> Error connection to database: %s!", mysql_error(pMySql));
                     return false;
                 }
                 mysql_set_character_set(pMySql, "utf8");
-                //m_//pSysLogger->Add(2,"<CMySQLPool::ConnectDB()> push pMySql[%p]!", pMySql);
+                printfs(2,"<CMySQLPool::ConnectDB()> push pMySql[%p]!", pMySql);
                 m_lsIdleList.push_back(pMySql);
             }
         }
     }
     catch (...){
-        //m_//pSysLogger->Add(0,"<CMySQLPool::ConnectDB()> Unknow error occured while connection to database!");
+        printfs(0,"<CMySQLPool::ConnectDB()> Unknow error occured while connection to database!");
         return false;
     }
     return true;
@@ -70,7 +70,7 @@ MYSQL* CMySQLPool::GetIdleMySql()
     }
     sMutex.UnLock();
 
-    //m_//pSysLogger->Add(2,"<CMySQLPool::GetIdleMySql()> return pMySql:[%p]!", pMySql);
+    printfs(2,"<CMySQLPool::GetIdleMySql()> return pMySql:[%p]!", pMySql);
     return pMySql;
 }
 
@@ -79,7 +79,7 @@ void CMySQLPool::SetIdleMysql(MYSQL* pMySql)
     if (pMySql == NULL){
         return;
     }
-    //m_//pSysLogger->Add(2,"<CMySQLPool::SetIdleMysql()> input pMySql:[%p]!", pMySql);
+    printfs(2,"<CMySQLPool::SetIdleMysql()> input pMySql:[%p]!", pMySql);
     sMutex.Lock();
     m_lsBusyList.remove(pMySql);
     m_lsIdleList.push_back(pMySql);

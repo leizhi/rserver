@@ -80,22 +80,22 @@ int main(int argc, char* argv[])
 
     CSystemConfigInfo* pConfigInfo = pObjectInstance->GetSystemConfigInfo();
     //pSysLogger = pObjectInstance->GetSysLogger();
-    //pSysLogger->Add(1, "Start Weather_Data_service Application!");
+    printfs(1, "Start Weather_Data_service Application!");
 
     /* 取得命令行处理模块                                                    */
     pFactoryInstance = CProcessFactory::GetInstance();
     pChannelItem = new CChannelItem(pConfigInfo->GetRecvPort());
     /* 启动命令行处理线程                                                    */
     try{
-        //pSysLogger->Add(1, "Start pChannelItem->Create()!");
+        printfs(1, "Start pChannelItem->Create()!");
         pChannelItem->Start();
-        //pSysLogger->Add(1, "Start pChannelItem->Join()!");
+        printfs(1, "Start pChannelItem->Join()!");
         pChannelItem->Join();
-        //pSysLogger->Add(1, "End pChannelItem->Join()!");
+        printfs(1, "End pChannelItem->Join()!");
     }
     catch(...){
         pChannelItem->Stop();
-        //pSysLogger->Add(1, "Exception occured!!");
+        printfs(1, "Exception occured!!");
     }
 
     if ( pChannelItem != NULL ){
@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
         pChannelItem = NULL;
     }
 
-    //pSysLogger->Add(1, "Exit Weather_Data_service Application!");
+    printfs(1, "Exit Weather_Data_service Application!");
     pObjectInstance = CObjectFactory::GetInstance();
     if ( pObjectInstance != NULL ){
         delete pObjectInstance;

@@ -42,12 +42,12 @@ void* CThread::StartRoutine(void* pThread){
     CThread* pThis = (CThread*)pThread;
     try{
         pThis->SetRunningState(true);
-        //pSysLogger->Add(1, "CThread::StartRoutine Start Process:(%s)", pThis->GetName());
+        printfs(1, "CThread::StartRoutine Start Process:(%s)", pThis->GetName());
 //        pThis->m_pProcess->Do();
         pThis->SetRunningState(false);
     }
     catch(exception e){
-        //pSysLogger->Add(0, "CThread::StartRoutine StartRoutine:(%s)   Exception occured!!", pThis->GetName());
+        printfs(0, "CThread::StartRoutine StartRoutine:(%s)   Exception occured!!", pThis->GetName());
     }
     return NULL;
 }
@@ -79,11 +79,11 @@ void CThread::Create()
         int iRc = pthread_create(&m_tId, NULL, CThread::StartRoutine, this);
         pthread_attr_destroy(&sAttr);
         if(iRc) {
-            //pSysLogger->Add(0, "pthread_create failure!(%s)", GetName());
+            printfs(0, "pthread_create failure!(%s)", GetName());
             return;
         }
     }catch(exception e){
-        //pSysLogger->Add(0, "pthread_create failure!(%s)   exception!", GetName());
+        printfs(0, "pthread_create failure!(%s)   exception!", GetName());
         return;
     }
 }
@@ -96,7 +96,7 @@ void CThread::Stop() {
     //CLog* //pSysLogger = CObjectFactory::GetInstance()->GetSysLogger();
     int nRc = pthread_cancel( m_tId );
     if ( nRc < 0 ) {
-        //pSysLogger->Add(1, "CThread::Stop(%s)..................", GetName());
+        printfs(1, "CThread::Stop(%s)..................", GetName());
     }
     m_bIsRunning = false;
 }
@@ -105,7 +105,7 @@ void CThread::Join() {
     //CLog* //pSysLogger = CObjectFactory::GetInstance()->GetSysLogger();
     int nRc = pthread_join( m_tId, NULL );
     if ( nRc < 0 ) {
-        //pSysLogger->Add(1, "CThread::~CThread(%s)..................", GetName());
+        printfs(1, "CThread::~CThread(%s)..................", GetName());
     }
     m_bIsRunning = false;
 }

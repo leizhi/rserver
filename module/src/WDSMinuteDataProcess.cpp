@@ -56,7 +56,7 @@ CWDSMinuteDataProcess::~CWDSMinuteDataProcess(){
 ******************************************************************************/
 void CWDSMinuteDataProcess::Do(){
     //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
-    //m_//pSysLogger->Add(1,"<CWDSMinuteDataProcess::Do()> WDSMinuteDataProcess start!");
+    printfs(1,"<CWDSMinuteDataProcess::Do()> WDSMinuteDataProcess start!");
 
     int nStatus = 0;
     int nRet = 0;
@@ -69,24 +69,24 @@ void CWDSMinuteDataProcess::Do(){
     WDS_DBHelper* pWDSHelper = NULL;
     do{
         if (m_pRecvSocket == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSMinuteDataProcess::Do()> m_pRecvSocket == NULL");
+            printfs(0,"<CWDSMinuteDataProcess::Do()> m_pRecvSocket == NULL");
             break;
         }
 
         // 【业务处理】1. 取得端口传入的分钟气象数据信息数据
         nRet = m_pRecvSocket->Receive((char*)(&elementsMinuteData) + sizeof(stHeader), nLength);
         if(nRet == 0) {
-            //m_//pSysLogger->Add(0,"<CWDSMinuteDataProcess::Do()> Receive packet time out");
+            printfs(0,"<CWDSMinuteDataProcess::Do()> Receive packet time out");
             m_pRecvSocket->Close();
             break;
         }
         if(nRet == -1) {
-            //m_//pSysLogger->Add(0, "<CWDSMinuteDataProcess::Do()> Receive packet failed");
+            printfs(0, "<CWDSMinuteDataProcess::Do()> Receive packet failed");
             m_pRecvSocket->Close();
             break;
         }
-        //m_//pSysLogger->Add(2, "<CWDSMinuteDataProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s], fCurTemp[%f], fRainfall[%f], cWindDirection[%.4s], fWindVelocity[%f], fCurAP[%f], fHumidity[%f]",
-        /*                     elementsMinuteData.cCurTime,
+        printfs(2, "<CWDSMinuteDataProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s], fCurTemp[%f], fRainfall[%f], cWindDirection[%.4s], fWindVelocity[%f], fCurAP[%f], fHumidity[%f]",
+                             elementsMinuteData.cCurTime,
                              elementsMinuteData.cStationID,
                              elementsMinuteData.fCurTemp,
                              elementsMinuteData.fRainfall,
@@ -94,23 +94,23 @@ void CWDSMinuteDataProcess::Do(){
                              elementsMinuteData.fWindVelocity,
                              elementsMinuteData.fCurAP,
                              elementsMinuteData.fHumidity);
-*/
+
         // 修改方向为标准方向
         nStatus = CObjectFactory::GetInstance()->ChangeDirection(elementsMinuteData.cWindDirection);
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSMinuteDataProcess::Do()> Wind direction error! input wind direct [%s]", elementsMinuteData.cWindDirection);
+            printfs(0,"<CWDSMinuteDataProcess::Do()> Wind direction error! input wind direct [%s]", elementsMinuteData.cWindDirection);
             break;
         }
 
         MYSQL* pMysqlConnection = CObjectFactory::GetInstance()->GetMySQLPool()->GetIdleMySql();
         if (pMysqlConnection == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSMinuteDataProcess::Do()> No enough mysql connections!");
+            printfs(0,"<CWDSMinuteDataProcess::Do()> No enough mysql connections!");
             nStatus = 0;
             break;
         }
         pWDSHelper = new WDS_DBHelper();
         if (pWDSHelper == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSMinuteDataProcess::Do()> Can not connect to DB!");
+            printfs(0,"<CWDSMinuteDataProcess::Do()> Can not connect to DB!");
             nStatus = 0;
             break;
         }
@@ -120,7 +120,7 @@ void CWDSMinuteDataProcess::Do(){
         int nCount = 0;
         nStatus = pWDSHelper->GetElementsMinuteDataCount(elementsMinuteData.cStationID, nCount);
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSMinuteDataProcess::Do()> GetElementsMinuteDataCount() operation failed!");
+            printfs(0,"<CWDSMinuteDataProcess::Do()> GetElementsMinuteDataCount() operation failed!");
             break;
         }
         if (nCount != 0){
@@ -132,7 +132,7 @@ void CWDSMinuteDataProcess::Do(){
             nStatus = pWDSHelper->InsertElementsMinuteData(&elementsMinuteData);
         }
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSMinuteDataProcess::Do()> Process elements minute data failed!");
+            printfs(0,"<CWDSMinuteDataProcess::Do()> Process elements minute data failed!");
             break;
         }
 
@@ -153,14 +153,14 @@ void CWDSMinuteDataProcess::Do(){
     // 应答电文送信
     nRet = m_pRecvSocket->Send((char*)(&answerInfo), sizeof(answerInfo));
     if(nRet == 0) {
-        //m_//pSysLogger->Add(0,"<CWDSMinuteDataProcess::Do()> Send status code time out");
+        printfs(0,"<CWDSMinuteDataProcess::Do()> Send status code time out");
     }
     if(nRet == -1) {
-        //m_//pSysLogger->Add(0, "<CWDSMinuteDataProcess::Do()> Send status code failed");
+        printfs(0, "<CWDSMinuteDataProcess::Do()> Send status code failed");
     }
     m_pRecvSocket->Close();
 
-    //m_//pSysLogger->Add(1,"<CWDSMinuteDataProcess::Do()> WDSMinuteDataProcess end!");
+    printfs(1,"<CWDSMinuteDataProcess::Do()> WDSMinuteDataProcess end!");
 }
 
 /******************************************************************************

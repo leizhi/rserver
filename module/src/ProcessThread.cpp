@@ -43,15 +43,15 @@ void* HProcessThread::StartRoutine(void* pThread){
     HProcessThread* pThis = (HProcessThread*)pThread;
     try{
         pThis->SetRunningState(true);
-        //pSysLogger->Add(1, "HProcessThread::StartRoutine Start Process!");
+        printfs(1, "HProcessThread::StartRoutine Start Process!");
         if (pThis->m_pProcess == NULL){
-            //pSysLogger->Add(0, "No process in this thread!");
+            printfs(0, "No process in this thread!");
         }
         pThis->m_pProcess->Do();
         pThis->SetRunningState(false);
     }
     catch(exception e){
-        //pSysLogger->Add(0, "HProcessThread::StartRoutine StartRoutine:  Exception occured!!");
+        printfs(0, "HProcessThread::StartRoutine StartRoutine:  Exception occured!!");
     }
     pthread_exit(0);
 }
@@ -84,11 +84,11 @@ void HProcessThread::Create()
         printf("HProcessThread::Create 0x%08x %d\n",&m_tId,iRc);
         pthread_attr_destroy(&sAttr);
         if(iRc) {
-            //pSysLogger->Add(0, "pthread_create failure! ");
+            printfs(0, "pthread_create failure! ");
             return;
         }
     }catch(exception e){
-        //pSysLogger->Add(0, "pthread_create failure! exception!");
+        printfs(0, "pthread_create failure! exception!");
         return;
     }
 }
@@ -101,7 +101,7 @@ void HProcessThread::Stop() {
     //CLog* //pSysLogger = CObjectFactory::GetInstance()->GetSysLogger();
     int nRc = pthread_cancel( m_tId );
     if ( nRc < 0 ) {
-        //pSysLogger->Add(1, "HProcessThread::Stop(%s)..................", GetName());
+        printfs(1, "HProcessThread::Stop(%s)..................", GetName());
     }
     m_bIsRunning = false;
 }
@@ -110,7 +110,7 @@ void HProcessThread::Join() {
     //CLog* //pSysLogger = CObjectFactory::GetInstance()->GetSysLogger();
     int nRc = pthread_join( m_tId, NULL );
     if ( nRc < 0 ) {
-        //pSysLogger->Add(1, "HProcessThread::~HProcessThread(%s)..................", GetName());
+        printfs(1, "HProcessThread::~HProcessThread(%s)..................", GetName());
     }
     m_bIsRunning = false;
 }

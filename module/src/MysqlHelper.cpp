@@ -73,7 +73,7 @@ void MysqlHelper::setDBName(string dbName)
 {
     if ( dbName.empty() )
     {// 用户没有指定数据库名
-        //m_//pSysLogger->Add(1,"<MysqlHelper::setDBName()> DBName is null! Used default value: mysql");
+        printfs(1,"<MysqlHelper::setDBName()> DBName is null! Used default value: mysql");
         this ->DBNAME = new char[5];
         strcpy(this ->DBNAME, "mysql");
     }
@@ -94,7 +94,7 @@ void MysqlHelper::setHosts(string hosts)
 {
     if ( hosts.empty() )
     {// 用户没有指定数据库IP地址    
-        //m_//pSysLogger->Add(1,"<MysqlHelper::setHosts()> Hosts is null! Used default value: localhost");
+        printfs(1,"<MysqlHelper::setHosts()> Hosts is null! Used default value: localhost");
         this ->HOSTS = new char[9];
         strcpy(this ->HOSTS, "localhost");
     }
@@ -115,7 +115,7 @@ void MysqlHelper::setPassword(string password)
 {// 用户没有指定密码
     if ( password.empty() )
     {
-        //m_//pSysLogger->Add(1,"<MysqlHelper::setPassword()> Password is null! Used default value: ");
+        printfs(1,"<MysqlHelper::setPassword()> Password is null! Used default value: ");
         this ->PASSWORD = new char[1];
         strcpy(this ->PASSWORD, "");
     }
@@ -136,7 +136,7 @@ void MysqlHelper::setPort(unsigned int port)
 {// 用户没有指定端口号，使用默认端口号
     if ( !port )
     {
-        //m_//pSysLogger->Add(1,"<MysqlHelper::setPort()> Port is null! Used default value: 0");
+        printfs(1,"<MysqlHelper::setPort()> Port is null! Used default value: 0");
         this ->DEFAULTPORT = 0;
     }
     else
@@ -155,7 +155,7 @@ void MysqlHelper::setUserName(string userName)
 {// 用户没有指定登录用户名
     if ( userName.empty() )
     {
-        //m_//pSysLogger->Add(1,"<MysqlHelper::setUserName()> UserName is null! Used default value: root");
+        printfs(1,"<MysqlHelper::setUserName()> UserName is null! Used default value: root");
         this ->USERNAME = new char[4];
         strcpy(this ->USERNAME, "root");
     }
@@ -176,7 +176,7 @@ bool MysqlHelper::initConnection()
 {
     if ( IsConnected )
     {// 已经连接到服务器
-        //m_//pSysLogger->Add(0,"<MysqlHelper::initConnection()> Allready connected to server!");
+        printfs(0,"<MysqlHelper::initConnection()> Allready connected to server!");
         return false;
     }
     m_pSQLClient = mysql_init((MYSQL*)NULL);// 初始化相关对象
@@ -185,7 +185,7 @@ bool MysqlHelper::initConnection()
     if ( !mysql_real_connect( m_pSQLClient, HOSTS, USERNAME, PASSWORD, DBNAME,
                               DEFAULTPORT, NULL, CLIENT_MULTI_STATEMENTS|CLIENT_INTERACTIVE) )
     {// 连接到服务器
-        //m_//pSysLogger->Add(0,"<MysqlHelper::initConnection()> Error connection to database: %s!", mysql_error(m_pSQLClient));
+        printfs(0,"<MysqlHelper::initConnection()> Error connection to database: %s!", mysql_error(m_pSQLClient));
         return false;
     }
     // 设置插入数据的编码格式为“utf8”
@@ -205,12 +205,12 @@ bool MysqlHelper::runSQLCommand(string sql)
 {
     if ( !IsConnected )
     {// 没有连接到服务器
-        //m_//pSysLogger->Add(0,"<MysqlHelper::runSQLCommand()> Not connect to database!");
+        printfs(0,"<MysqlHelper::runSQLCommand()> Not connect to database!");
         return false;
     }
     if ( sql.empty() )
     {// SQL语句为空
-        //m_//pSysLogger->Add(0,"<MysqlHelper::runSQLCommand()> SQL is null!");
+        printfs(0,"<MysqlHelper::runSQLCommand()> SQL is null!");
         return false;
     }
 
@@ -224,7 +224,7 @@ bool MysqlHelper::runSQLCommand(string sql)
         i = mysql_real_query(m_pSQLClient,sql.c_str(),(unsigned int)strlen(sql.c_str()));// 执行查询
         if ( i )
         {
-            //m_//pSysLogger->Add(0,"<MysqlHelper::runSQLCommand()> Error query from database: %s", mysql_error(m_pSQLClient));
+            printfs(0,"<MysqlHelper::runSQLCommand()> Error query from database: %s", mysql_error(m_pSQLClient));
             //std::cout << "Error query from database: %s\n" << mysql_error(&mySQLClient) << std::endl;
             return false;
         }
@@ -238,7 +238,7 @@ bool MysqlHelper::runSQLCommand(string sql)
         } while (!mysql_next_result(m_pSQLClient));
     }
     catch(...){
-        //m_//pSysLogger->Add(0,"<MysqlHelper::runSQLCommand()> An unknown error occured during query : %s", sql.c_str());
+        printfs(0,"<MysqlHelper::runSQLCommand()> An unknown error occured during query : %s", sql.c_str());
         return false;
     }
 

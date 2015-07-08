@@ -63,7 +63,7 @@ CWDSStationImageProcess::~CWDSStationImageProcess(){
 ******************************************************************************/
 void CWDSStationImageProcess::Do(){
     //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
-    //m_//pSysLogger->Add(1,"<CWDSStationImageProcess::Do()> WDSStationImageProcess start!");
+    printfs(1,"<CWDSStationImageProcess::Do()> WDSStationImageProcess start!");
 
     int nStatus = 0;
     int nRet = 0;
@@ -83,23 +83,23 @@ void CWDSStationImageProcess::Do(){
     WDS_DBHelper* pWDSHelper = NULL;
     do{
         if (m_pRecvSocket == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSrealtimeWeatherReportProcess::Do()> m_pRecvSocket == NULL");
+            printfs(0,"<CWDSrealtimeWeatherReportProcess::Do()> m_pRecvSocket == NULL");
             break;;
         }
 
         // step 1. 取得端口传入的信息数据
         nRet = m_pRecvSocket->Receive((char*)(&stationImage) + sizeof(stHeader), nLength);
         if(nRet == 0) {
-            //m_//pSysLogger->Add(0,"<CWDSStationImageProcess::Do()> Receive packet time out");
+            printfs(0,"<CWDSStationImageProcess::Do()> Receive packet time out");
             m_pRecvSocket->Close();
             break;
         }
         if(nRet == -1) {
-            //m_//pSysLogger->Add(0, "<CWDSStationImageProcess::Do()> Receive packet failed");
+            printfs(0, "<CWDSStationImageProcess::Do()> Receive packet failed");
             m_pRecvSocket->Close();
             break;
         }
-        /*m_//pSysLogger->Add(2, "<CWDSStationImageProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s], cDirection[%s], nPicSize[%d]",
+        /*m_printfs(2, "<CWDSStationImageProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s], cDirection[%s], nPicSize[%d]",
                              stationImage.cCurTime,
                              stationImage.cStationID,
                              stationImage.cDirection,
@@ -108,7 +108,7 @@ void CWDSStationImageProcess::Do(){
         // 修改方向为标准方向
         nStatus = CObjectFactory::GetInstance()->ChangeDirection(stationImage.cDirection);
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSStationImageProcess::Do()> Wind direction error! input wind direct [%s]", stationImage.cDirection);
+            printfs(0,"<CWDSStationImageProcess::Do()> Wind direction error! input wind direct [%s]", stationImage.cDirection);
             break;
         }
 
@@ -116,13 +116,13 @@ void CWDSStationImageProcess::Do(){
         pImage = new char[stationImage.nPicSize];
         nRet = m_pRecvSocket->Receive(pImage, stationImage.nPicSize);
         if(nRet == 0) {
-            //m_//pSysLogger->Add(0,"<CWDSStationImageProcess::Do()> Receive packet time out");
+            printfs(0,"<CWDSStationImageProcess::Do()> Receive packet time out");
             m_pRecvSocket->Close();
             nStatus = 0;
             break;
         }
         if(nRet == -1) {
-            //m_//pSysLogger->Add(0, "<CWDSStationImageProcess::Do()> Receive packet failed");
+            printfs(0, "<CWDSStationImageProcess::Do()> Receive packet failed");
             m_pRecvSocket->Close();
             nStatus = 0;
             break;
@@ -148,7 +148,7 @@ void CWDSStationImageProcess::Do(){
         sprintf( pFilePath, "%s%s/%04d%02d%02d/", pImgPath, stationImage.cStationID, year, month, day);
         // 创建目录结构
         if (!CreateFolder(pFilePath)){
-            //m_//pSysLogger->Add(0, "<CWDSStationImageProcess::Do()> Create station image folder failed folder:[%s]", pFilePath);
+            printfs(0, "<CWDSStationImageProcess::Do()> Create station image folder failed folder:[%s]", pFilePath);
             m_pRecvSocket->Close();
             nStatus = 0;
             break;
@@ -158,7 +158,7 @@ void CWDSStationImageProcess::Do(){
 
         sprintf( pFile, "%s%s", pFilePath, pFileName );
         m_pFile = new BVodFile(pFile);
-        //m_//pSysLogger->Add( 2, "<CWDSStationImageProcess::Do()> Ready to create image file[%s]", pFile );
+        printfs(2, "<CWDSStationImageProcess::Do()> Ready to create image file[%s]", pFile );
 
         int32_t nRc = m_pFile->Open(FILE_WRITE_MODE);
         if(nRc != 0) {
@@ -176,13 +176,13 @@ void CWDSStationImageProcess::Do(){
 
         MYSQL* pMysqlConnection = CObjectFactory::GetInstance()->GetMySQLPool()->GetIdleMySql();
         if (pMysqlConnection == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSStationImageProcess::Do()> No enough mysql connections!");
+            printfs(0,"<CWDSStationImageProcess::Do()> No enough mysql connections!");
             nStatus = 0;
             break;
         }
         pWDSHelper = new WDS_DBHelper();
         if (pWDSHelper == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSStationImageProcess::Do()> Can not connect to DB!");
+            printfs(0,"<CWDSStationImageProcess::Do()> Can not connect to DB!");
             nStatus = 0;
             break;
         }
@@ -191,21 +191,21 @@ void CWDSStationImageProcess::Do(){
         // 2.业务处理，向DB的tb_gb_file_info表插入图像数据
         nStatus = pWDSHelper->InsertImageFile(pFilePath, pFileName, pFileName, stationImage.cCurTime);
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSStationImageProcess::Do()> InsertImageFile() operation failed!");
+            printfs(0,"<CWDSStationImageProcess::Do()> InsertImageFile() operation failed!");
             break;
         }
 
         // 3.业务处理，从DB中取得tb_gb_file_info表中的刚才插入的图片文件的ID
         nStatus = pWDSHelper->GetImageFileID(pFileName, pFilePath, lId);
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSStationImageProcess::Do()> GetImageFileID() operation failed!");
+            printfs(0,"<CWDSStationImageProcess::Do()> GetImageFileID() operation failed!");
             break;
         }
 
         // 4.业务处理，向DB的tb_station_image表插入台站图像信息
         nStatus = pWDSHelper->InsertStationImage(&stationImage, lId);
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSStationImageProcess::Do()> InsertStationImage() operation failed!");
+            printfs(0,"<CWDSStationImageProcess::Do()> InsertStationImage() operation failed!");
             break;
         }
     }
@@ -230,14 +230,14 @@ void CWDSStationImageProcess::Do(){
     // 应答电文送信
     nRet = m_pRecvSocket->Send((char*)(&answerInfo), sizeof(answerInfo));
     if(nRet == 0) {
-        //m_//pSysLogger->Add(0,"<CWDSStationImageProcess::Do()> Send status code time out");
+        printfs(0,"<CWDSStationImageProcess::Do()> Send status code time out");
     }
     if(nRet == -1) {
-        //m_//pSysLogger->Add(0, "<CWDSStationImageProcess::Do()> Send status code failed");
+        printfs(0, "<CWDSStationImageProcess::Do()> Send status code failed");
     }
     m_pRecvSocket->Close();
 
-    //m_//pSysLogger->Add(1,"<CWDSStationImageProcess::Do()> WDSStationImageProcess end!");
+    printfs(1,"<CWDSStationImageProcess::Do()> WDSStationImageProcess end!");
 }
 
 /******************************************************************************

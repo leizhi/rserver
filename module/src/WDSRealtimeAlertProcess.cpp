@@ -57,7 +57,7 @@ CWDSRealtimeAlertProcess::~CWDSRealtimeAlertProcess(){
 ******************************************************************************/
 void CWDSRealtimeAlertProcess::Do(){
     //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
-    //m_//pSysLogger->Add(1,"<CWDSRealtimeAlertProcess::Do()> WDSRealtimeAlertProcess start!");
+    printfs(1,"<CWDSRealtimeAlertProcess::Do()> WDSRealtimeAlertProcess start!");
 
     int nStatus = 0;
     int nRet = 0;
@@ -67,7 +67,7 @@ void CWDSRealtimeAlertProcess::Do(){
     WDS_DBHelper* pWDSHelper = NULL;
     do{
         if (m_pRecvSocket == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSRealtimeAlertProcess::Do()> m_pRecvSocket == NULL");
+            printfs(0,"<CWDSRealtimeAlertProcess::Do()> m_pRecvSocket == NULL");
             nStatus = 0;
             break;
         }
@@ -78,39 +78,39 @@ void CWDSRealtimeAlertProcess::Do(){
         // 【业务处理】1. 取得端口传入的小时气象数据信息数据
         nRet = m_pRecvSocket->Receive((char*)(&stationAlert) + sizeof(stHeader), nLength);
         if(nRet == 0) {
-            //m_//pSysLogger->Add(0,"<CWDSRealtimeAlertProcess::Do()> Receive packet time out");
+            printfs(0,"<CWDSRealtimeAlertProcess::Do()> Receive packet time out");
             m_pRecvSocket->Close();
             nStatus = 0;
             break;
         }
         if(nRet == -1) {
-            //m_//pSysLogger->Add(0, "<CWDSRealtimeAlertProcess::Do()> Receive packet failed");
+            printfs(0, "<CWDSRealtimeAlertProcess::Do()> Receive packet failed");
             m_pRecvSocket->Close();
             nStatus = 0;
             break;
         }
-        //m_//pSysLogger->Add(2, "<CWDSRealtimeAlertProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s], cAlert[%s], alertCharacter[No.8][%#x]",
-                         /*    stationAlert.cCurTime,
+        printfs(2, "<CWDSRealtimeAlertProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s], cAlert[%s], alertCharacter[No.8][%#x]",
+                             stationAlert.cCurTime,
                              stationAlert.cStationID,
                              stationAlert.cAlert,
                              stationAlert.cAlert[8]);
-*/
+
         // 业务处理，数据包校验，判断当前包是否为报警包
         if (stationAlert.cAlert[1] != 0x08){
-            //m_//pSysLogger->Add(0,"<CWDSRealtimeAlertProcess::Do()> Packet type error, not an alert packet! Received type:[%#x]", stationAlert.cAlert[1]);
+            printfs(0,"<CWDSRealtimeAlertProcess::Do()> Packet type error, not an alert packet! Received type:[%#x]", stationAlert.cAlert[1]);
             nStatus = 0;
             break;
         }
 
         MYSQL* pMysqlConnection = CObjectFactory::GetInstance()->GetMySQLPool()->GetIdleMySql();
         if (pMysqlConnection == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSRealtimeAlertProcess::Do()> No enough mysql connections!");
+            printfs(0,"<CWDSRealtimeAlertProcess::Do()> No enough mysql connections!");
             nStatus = 0;
             break;
         }
         pWDSHelper = new WDS_DBHelper();
         if (pWDSHelper == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSRealtimeAlertProcess::Do()> Can not connect to DB!");
+            printfs(0,"<CWDSRealtimeAlertProcess::Do()> Can not connect to DB!");
             nStatus = 0;
             break;
         }
@@ -121,7 +121,7 @@ void CWDSRealtimeAlertProcess::Do(){
 
         nStatus = pWDSHelper->GetStationRealtimeAlertCount(stationAlert.cStationID, m_nFuncType, nCount);
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSRealtimeAlertProcess::Do()> GetStationRealtimeAlertCount() operation failed!");
+            printfs(0,"<CWDSRealtimeAlertProcess::Do()> GetStationRealtimeAlertCount() operation failed!");
             break;
         }
         int nNealyAlert[8] = {0,0,0,0,0,0,0,0};
@@ -129,13 +129,13 @@ void CWDSRealtimeAlertProcess::Do(){
             // step 2.1.1业务处理，取得最近一条实时报警状态信息
             nStatus = pWDSHelper->GetStationNealyAlertStatus(stationAlert.cStationID, m_nFuncType, nNealyAlert);
             if (!nStatus){
-                //m_//pSysLogger->Add(0,"<CWDSRealtimeAlertProcess::Do()> GetStationNealyAlertStatus() operation failed!");
+                printfs(0,"<CWDSRealtimeAlertProcess::Do()> GetStationNealyAlertStatus() operation failed!");
                 break;
             }
             // step 2.1.2业务处理，结合最近的实时报警信息，创建一条最新报警
             nStatus = pWDSHelper->InsertRealtimeAlert(&stationAlert, m_nFuncType, nNealyAlert);
             if (!nStatus){
-                //m_//pSysLogger->Add(0,"<CWDSRealtimeAlertProcess::Do()> InsertRealtimeAlert() operation failed!");
+                printfs(0,"<CWDSRealtimeAlertProcess::Do()> InsertRealtimeAlert() operation failed!");
                 break;
             }
         }
@@ -143,13 +143,13 @@ void CWDSRealtimeAlertProcess::Do(){
             // step 2.1.2业务处理，创建一条最新报警
             nStatus = pWDSHelper->InsertRealtimeAlert(&stationAlert, m_nFuncType, nNealyAlert);
             if (!nStatus){
-                //m_//pSysLogger->Add(0,"<CWDSRealtimeAlertProcess::Do()> InsertRealtimeAlert() operation failed!");
+                printfs(0,"<CWDSRealtimeAlertProcess::Do()> InsertRealtimeAlert() operation failed!");
                 break;
             }
         }
 
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSRealtimeAlertProcess::Do()> Database operation failed!");
+            printfs(0,"<CWDSRealtimeAlertProcess::Do()> Database operation failed!");
             break;
         }
 
@@ -170,15 +170,15 @@ void CWDSRealtimeAlertProcess::Do(){
     // 应答电文送信
     nRet = m_pRecvSocket->Send((char*)(&answerInfo), sizeof(answerInfo));
     if(nRet == 0) {
-        //m_//pSysLogger->Add(0,"<CWDSRealtimeAlertProcess::Do()> Send status code time out");
+        printfs(0,"<CWDSRealtimeAlertProcess::Do()> Send status code time out");
     }
     if(nRet == -1) {
-        //m_//pSysLogger->Add(0, "<CWDSRealtimeAlertProcess::Do()> Send status code failed");
+        printfs(0, "<CWDSRealtimeAlertProcess::Do()> Send status code failed");
     }
 
     m_pRecvSocket->Close();
 
-    //m_//pSysLogger->Add(1,"<CWDSRealtimeAlertProcess::Do()> WDSRealtimeAlertProcess end!");
+    printfs(1,"<CWDSRealtimeAlertProcess::Do()> WDSRealtimeAlertProcess end!");
 }
 
 /******************************************************************************

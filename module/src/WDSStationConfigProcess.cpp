@@ -57,7 +57,7 @@ CWDSStationConfigProcess::~CWDSStationConfigProcess(){
 ******************************************************************************/
 void CWDSStationConfigProcess::Do(){
     //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
-    //m_//pSysLogger->Add(1,"<CWDSStationConfigProcess::Do()> WDSStationConfigProcess start!");
+    printfs(1,"<CWDSStationConfigProcess::Do()> WDSStationConfigProcess start!");
 
     int nStatus = 0;
     int nRet = 0;
@@ -72,7 +72,7 @@ void CWDSStationConfigProcess::Do(){
     WDS_DBHelper* pWDSHelper = NULL;
     do{
         if (m_pRecvSocket == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSStationConfigProcess::Do()> m_pRecvSocket == NULL");
+            printfs(0,"<CWDSStationConfigProcess::Do()> m_pRecvSocket == NULL");
             nStatus = 0;
             break;;
         }
@@ -80,30 +80,30 @@ void CWDSStationConfigProcess::Do(){
         // 【业务处理】1. 取得端口传入的数据
         nRet = m_pRecvSocket->Receive((char*)(&autoStationControlRequest) + sizeof(stHeader), nLength);
         if(nRet == 0) {
-            //m_//pSysLogger->Add(0,"<CWDSStationConfigProcess::Do()> Receive packet time out");
+            printfs(0,"<CWDSStationConfigProcess::Do()> Receive packet time out");
             m_pRecvSocket->Close();
             nStatus = 0;
             break;
         }
         if(nRet == -1) {
-            //m_//pSysLogger->Add(0, "<CWDSStationConfigProcess::Do()> Receive packet failed");
+            printfs(0, "<CWDSStationConfigProcess::Do()> Receive packet failed");
             m_pRecvSocket->Close();
             nStatus = 0;
             break;
         }
-        //m_//pSysLogger->Add(2, "<CWDSStationConfigProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s]",
-        //                     autoStationControlRequest.cCurTime,
-        //                     autoStationControlRequest.cStationID);
+        printfs(2, "<CWDSStationConfigProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s]",
+                             autoStationControlRequest.cCurTime,
+                             autoStationControlRequest.cStationID);
 
         MYSQL* pMysqlConnection = CObjectFactory::GetInstance()->GetMySQLPool()->GetIdleMySql();
         if (pMysqlConnection == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSStationConfigProcess::Do()> No enough mysql connections!");
+            printfs(0,"<CWDSStationConfigProcess::Do()> No enough mysql connections!");
             nStatus = 0;
             break;
         }
         pWDSHelper = new WDS_DBHelper();
         if (pWDSHelper == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSStationConfigProcess::Do()> Can not connect to DB!");
+            printfs(0,"<CWDSStationConfigProcess::Do()> Can not connect to DB!");
             nStatus = 0;
             break;
         }
@@ -112,12 +112,12 @@ void CWDSStationConfigProcess::Do(){
         // 业务处理，取得系统配置表中的正常抓拍时间间隔、报警抓拍时间间隔
         nStatus = pWDSHelper->GetSysConfigValuebyCode(SYSTEM_CONFIG_NORMAL_INTERVAL, chNormalInterval);
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSStationConfigProcess::Do()> GetSysConfigValuebyCode-NormalInterval operation failed!");
+            printfs(0,"<CWDSStationConfigProcess::Do()> GetSysConfigValuebyCode-NormalInterval operation failed!");
             break;
         }
         nStatus = pWDSHelper->GetSysConfigValuebyCode(SYSTEM_CONFIG_ALERT_INTERVAL, chAlertInterval);
         if (!nStatus){
-            //m_//pSysLogger->Add(0,"<CWDSStationConfigProcess::Do()> GetSysConfigValuebyCode-AlertInterval operation failed!");
+            printfs(0,"<CWDSStationConfigProcess::Do()> GetSysConfigValuebyCode-AlertInterval operation failed!");
             break;
         }
     }
@@ -138,10 +138,10 @@ void CWDSStationConfigProcess::Do(){
     // 应答电文送信
     nRet = m_pRecvSocket->Send((char*)(&answerInfo), sizeof(answerInfo));
     if(nRet == 0) {
-        //m_//pSysLogger->Add(0,"<CWDSStationRegisterProcess::Do()> Send status code time out");
+        printfs(0,"<CWDSStationRegisterProcess::Do()> Send status code time out");
     }
     if(nRet == -1) {
-        //m_//pSysLogger->Add(0, "<CWDSStationRegisterProcess::Do()> Send status code failed");
+        printfs(0, "<CWDSStationRegisterProcess::Do()> Send status code failed");
     }
 
     // 发送系统配置应答
@@ -158,16 +158,16 @@ void CWDSStationConfigProcess::Do(){
         // 应答电文送信
         nRet = m_pRecvSocket->Send((char*)(&autoStationControlAnswer), sizeof(autoStationControlAnswer));
         if(nRet == 0) {
-            //m_//pSysLogger->Add(0,"<CWDSStationConfigProcess::Do()> Send status code time out");
+            printfs(0,"<CWDSStationConfigProcess::Do()> Send status code time out");
         }
         if(nRet == -1) {
-            //m_//pSysLogger->Add(0, "<CWDSStationConfigProcess::Do()> Send status code failed");
+            printfs(0, "<CWDSStationConfigProcess::Do()> Send status code failed");
         }
     }
 
     m_pRecvSocket->Close();
 
-    //m_//pSysLogger->Add(1,"<CWDSStationConfigProcess::Do()> WDSStationConfigProcess end!");
+    printfs(1,"<CWDSStationConfigProcess::Do()> WDSStationConfigProcess end!");
 }
 
 /******************************************************************************

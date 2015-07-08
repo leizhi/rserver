@@ -56,7 +56,7 @@ CWDSWeatherReportProcess::~CWDSWeatherReportProcess(){
 ******************************************************************************/
 void CWDSWeatherReportProcess::Do(){
     //m_//pSysLogger     = CObjectFactory::GetInstance()->GetSysLogger();
-    //m_//pSysLogger->Add(1,"<CWDSWeatherReportProcess::Do()> WDSWeatherReportProcess start!");
+    printfs(1,"<CWDSWeatherReportProcess::Do()> WDSWeatherReportProcess start!");
 
     int nStatus = 0;
     int nRet = 0;
@@ -69,7 +69,7 @@ void CWDSWeatherReportProcess::Do(){
     WDS_DBHelper* pWDSHelper = NULL;
     do{
         if (m_pRecvSocket == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSWeatherReportProcess::Do()> m_pRecvSocket == NULL");
+            printfs(0,"<CWDSWeatherReportProcess::Do()> m_pRecvSocket == NULL");
             nStatus = 0;
             break;;
         }
@@ -77,35 +77,35 @@ void CWDSWeatherReportProcess::Do(){
         // 【业务处理】1. 取得端口传入的小时气象数据信息数据
         nRet = m_pRecvSocket->Receive((char*)(&realtimeWeatherReport) + sizeof(stHeader), nLength);
         if(nRet == 0) {
-            //m_//pSysLogger->Add(0,"<CWDSWeatherReportProcess::Do()> Receive packet time out");
+            printfs(0,"<CWDSWeatherReportProcess::Do()> Receive packet time out");
             m_pRecvSocket->Close();
             nStatus = 0;
             break;
         }
         if(nRet == -1) {
-            //m_//pSysLogger->Add(0, "<CWDSWeatherReportProcess::Do()> Receive packet failed");
+            printfs(0, "<CWDSWeatherReportProcess::Do()> Receive packet failed");
             m_pRecvSocket->Close();
             nStatus = 0;
             break;
         }
-        //m_//pSysLogger->Add(2, "<CWDSWeatherReportProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s], cTime[%s], nFlag[%d], nVisibility[%d], nEventNo[%d], cEventComment[%s]",
-               /*              realtimeWeatherReport.cCurTime,
+        printfs(2, "<CWDSWeatherReportProcess::Do()> Receive struct info:cCurTime[%s], cStationID[%.10s], cTime[%s], nFlag[%d], nVisibility[%d], nEventNo[%d], cEventComment[%s]",
+                             realtimeWeatherReport.cCurTime,
                              realtimeWeatherReport.cStationID,
                              realtimeWeatherReport.cTime,
                              realtimeWeatherReport.nFlag,
                              realtimeWeatherReport.nVisibility,
                              realtimeWeatherReport.nEventNo,
                              realtimeWeatherReport.cEventComment);
-*/
+
         MYSQL* pMysqlConnection = CObjectFactory::GetInstance()->GetMySQLPool()->GetIdleMySql();
         if (pMysqlConnection == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSWeatherReportProcess::Do()> No enough mysql connections!");
+            printfs(0,"<CWDSWeatherReportProcess::Do()> No enough mysql connections!");
             nStatus = 0;
             break;
         }
         pWDSHelper = new WDS_DBHelper();
         if (pWDSHelper == NULL){
-            //m_//pSysLogger->Add(0,"<CWDSWeatherReportProcess::Do()> Can not connect to DB!");
+            printfs(0,"<CWDSWeatherReportProcess::Do()> Can not connect to DB!");
             nStatus = 0;
             break;
         }
@@ -123,13 +123,13 @@ void CWDSWeatherReportProcess::Do(){
                 // step 1.1.1业务处理，有未结束的同类型重大天气数据，结束该条重大天气数据
                 nStatus = pWDSHelper->UpdateRealtimeWeatherReport(&realtimeWeatherReport, nID);
                 if (!nStatus){
-                    //m_//pSysLogger->Add(0,"<CWDSWeatherReportProcess::Do()> UpdateRealtimeWeatherReport() failed!");
+                    printfs(0,"<CWDSWeatherReportProcess::Do()> UpdateRealtimeWeatherReport() failed!");
                     break;
                 }
-                //m_//pSysLogger->Add(1, "<CWDSWeatherReportProcess::Do()> Find begin weather that does not stoped, station_id:%s,current_time:%s,weather_type:%d",
-                      /*               realtimeWeatherReport.cStationID,
+                printfs(1, "<CWDSWeatherReportProcess::Do()> Find begin weather that does not stoped, station_id:%s,current_time:%s,weather_type:%d",
+                                     realtimeWeatherReport.cStationID,
                                      realtimeWeatherReport.cCurTime,
-                                     realtimeWeatherReport.nEventNo);*/
+                                     realtimeWeatherReport.nEventNo);
             }
             // step 1.1.2业务处理，向DB插入实时重大气象数据
             nStatus = pWDSHelper->InsertRealtimeWeatherReport(&realtimeWeatherReport);
@@ -139,23 +139,23 @@ void CWDSWeatherReportProcess::Do(){
             int nID = -1;
             nStatus = pWDSHelper->GetMaxWeatherReportID(&realtimeWeatherReport, nID);
             if (!nStatus){
-                //m_//pSysLogger->Add(0,"<CWDSWeatherReportProcess::Do()> GetMaxWeatherReportID() failed!");
+                printfs(0,"<CWDSWeatherReportProcess::Do()> GetMaxWeatherReportID() failed!");
                 break;
             }
             if (nID != -1){
                 // step 1.2.1业务处理，找到同类型重大天气数据，更新结束时间
                 nStatus = pWDSHelper->UpdateRealtimeWeatherReport(&realtimeWeatherReport, nID);
                 if (!nStatus){
-                    //m_//pSysLogger->Add(0,"<CWDSWeatherReportProcess::Do()> UpdateRealtimeWeatherReport() failed!");
+                    printfs(0,"<CWDSWeatherReportProcess::Do()> UpdateRealtimeWeatherReport() failed!");
                     break;
                 }
             }
             else{
                 // step 1.2.2业务处理，没有同类型重大天气数据，处理结束
-                //m_//pSysLogger->Add(0, "<CWDSWeatherReportProcess::Do()> No nearly begin weather type, station_id:%s,current_time:%s,weather_type:%d",
-                        /*             realtimeWeatherReport.cStationID,
+                printfs(0, "<CWDSWeatherReportProcess::Do()> No nearly begin weather type, station_id:%s,current_time:%s,weather_type:%d",
+                                     realtimeWeatherReport.cStationID,
                                      realtimeWeatherReport.cCurTime,
-                                     realtimeWeatherReport.nEventNo);*/
+                                     realtimeWeatherReport.nEventNo);
             }
         }
     }
@@ -175,14 +175,14 @@ void CWDSWeatherReportProcess::Do(){
     // 应答电文送信
     nRet = m_pRecvSocket->Send((char*)(&answerInfo), sizeof(answerInfo));
     if(nRet == 0) {
-        //m_//pSysLogger->Add(0,"<CWDSWeatherReportProcess::Do()> Send status code time out");
+        printfs(0,"<CWDSWeatherReportProcess::Do()> Send status code time out");
     }
     if(nRet == -1) {
-        //m_//pSysLogger->Add(0, "<CWDSWeatherReportProcess::Do()> Send status code failed");
+        printfs(0, "<CWDSWeatherReportProcess::Do()> Send status code failed");
     }
     m_pRecvSocket->Close();
 
-    //m_//pSysLogger->Add(1,"<CWDSWeatherReportProcess::Do()> WDSWeatherReportProcess end!");
+    printfs(1,"<CWDSWeatherReportProcess::Do()> WDSWeatherReportProcess end!");
 }
 
 /******************************************************************************
