@@ -103,6 +103,8 @@ int main(int argc, char* argv[])
         pChannelItem = NULL;
     }
 
+    sleep(10);
+    
     char s[1024];
     fgets(s,1024,stdin);
     while(strcmp(s,"exit\n")!=0){
