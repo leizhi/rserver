@@ -37,6 +37,7 @@ CPacketAnalysisProcess::CPacketAnalysisProcess(HTCPSocket* pRecvSocket)
     返回值        ：  无
 ******************************************************************************/
 CPacketAnalysisProcess::~CPacketAnalysisProcess(){
+    printfs(1,"<CPacketAnalysisProcess::Do()> 析构处理");
     m_pRecvSocket = NULL;
     if(m_pSendSocket != NULL) {
         m_pSendSocket->Close();
