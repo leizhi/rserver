@@ -65,9 +65,6 @@ CObjectFactory::~CObjectFactory(){
         delete m_pMySQLPool;
         m_pMySQLPool = NULL;
     }
-    //if(//m_//pSysLogger){
-    //    delete //m_//pSysLogger;
-    //}
 }
 
 void CObjectFactory::InitDirectionMap()
@@ -211,29 +208,6 @@ CSystemConfigInfo* CObjectFactory::GetSystemConfigInfo() {
     }
     return m_pSystemConfig;
 }
-
-/******************************************************************************
-    处理名        ：  取得Logger
-    函数名        ：  GetSysLogger()
-    参数          ：  无
-    返回值        ：  Logger对象
-******************************************************************************/
-/*CLog* CObjectFactory::GetSysLogger() {
-    
-    if (NULL == //m_//pSysLogger){
-        m_sMutex.TryLock();
-        m_sMutex.UnLock();
-    }
-
-    // 系统Logger                                                        
-    if (NULL != m_pSystemConfig) {
-        // 初始化Logger                                                  
-                               m_pSystemConfig->GetLogPath());
-     }else{
-     }
-    return //m_//pSysLogger;
-}
-*/
 
 /******************************************************************************
     处理名        ：  取得CObjectFactory类的唯一实例

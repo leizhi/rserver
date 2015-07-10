@@ -34,7 +34,6 @@ using std::endl;
     返回值        ：  无
 ******************************************************************************/
 HTCPSocket::HTCPSocket(){
-    //m_pSysLogger = CObjectFactory::GetInstance()->GetSysLogger();
     m_bInitTCP = false;
 }
 
@@ -534,22 +533,6 @@ void HTCPSocket::TimeoutTCP(int nSec, bool isRecive){
     返回值        ：  无
 ******************************************************************************/
 void HTCPSocket::WriteLog(int nlevel, const char * fmt, ...) {
-    /*
-    if(NULL == //m_pSysLogger) {
-        return;
-    }
-    char cLogMessage[1024] = "\0";
-    va_list va_alist;
-    va_start (va_alist, fmt);
-    vsnprintf (cLogMessage, sizeof(cLogMessage), fmt, va_alist);
-    va_end (va_alist);
-    if(nlevel == 0) {
-        //m_pSysLogger->Add(nlevel, "[%s][%s] [errno:%d][%s]",
-            //"HTCPSocket", cLogMessage, errno, strerror(errno));
-    } else {
-        //m_pSysLogger->Add(nlevel, "[%s][%s]", "HTCPSocket", cLogMessage);
-    }
-    */
 }
 /******************************************************************************
     End
