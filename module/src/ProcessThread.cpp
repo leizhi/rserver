@@ -39,7 +39,6 @@ using namespace std;
 ******************************************************************************/
 void* HProcessThread::StartRoutine(void* pThread){
     pthread_detach(pthread_self());
-    //CLog* //pSysLogger = CObjectFactory::GetInstance()->GetSysLogger();
     HProcessThread* pThis = (HProcessThread*)pThread;
     try{
         pThis->SetRunningState(true);
@@ -69,7 +68,6 @@ void HProcessThread::InitWork() {
 ******************************************************************************/
 void HProcessThread::Create()
 {
-    //CLog* //pSysLogger = CObjectFactory::GetInstance()->GetSysLogger();
     try{
         // Do some initialisations before starting the real job
         InitWork();
@@ -98,7 +96,6 @@ void HProcessThread::Create()
     函数名        ：  void Stop()
 ******************************************************************************/
 void HProcessThread::Stop() {
-    //CLog* //pSysLogger = CObjectFactory::GetInstance()->GetSysLogger();
     int nRc = pthread_cancel( m_tId );
     if ( nRc < 0 ) {
         printfs(1, "HProcessThread::Stop(%s)..................", GetName());
@@ -107,7 +104,6 @@ void HProcessThread::Stop() {
 }
 
 void HProcessThread::Join() {
-    //CLog* //pSysLogger = CObjectFactory::GetInstance()->GetSysLogger();
     int nRc = pthread_join( m_tId, NULL );
     if ( nRc < 0 ) {
         printfs(1, "HProcessThread::~HProcessThread(%s)..................", GetName());

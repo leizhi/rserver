@@ -37,7 +37,6 @@ int main(int argc, char* argv[])
     CProcessFactory*    pFactoryInstance = NULL; /* 处理模块实例工厂         */
     CObjectFactory*     pObjectInstance  = NULL; /* 对象实例工厂             */
 
-    //CLog* //pSysLogger = NULL;
     /* 取得日志操作模块                                                      */
     pObjectInstance  = CObjectFactory::GetInstance();
     CChannelItem* pChannelItem = NULL;
@@ -79,7 +78,6 @@ int main(int argc, char* argv[])
     }
 
     CSystemConfigInfo* pConfigInfo = pObjectInstance->GetSystemConfigInfo();
-    //pSysLogger = pObjectInstance->GetSysLogger();
     printfs(1, "Start Weather_Data_service Application!");
 
     /* 取得命令行处理模块                                                    */
@@ -98,11 +96,6 @@ int main(int argc, char* argv[])
         printfs(1, "Exception occured!!");
     }
 
-    if ( pChannelItem != NULL ){
-        delete pChannelItem;
-        pChannelItem = NULL;
-    }
-
     char s[1024];
     fgets(s,1024,stdin);
     while(strcmp(s,"exit\n")!=0){
@@ -110,6 +103,11 @@ int main(int argc, char* argv[])
         //printf("%s",s);
     }
 
+    if ( pChannelItem != NULL ){
+        delete pChannelItem;
+        pChannelItem = NULL;
+    }
+    
     printfs(1, "Exit Weather_Data_service Application!");
     pObjectInstance = CObjectFactory::GetInstance();
     if ( pObjectInstance != NULL ){

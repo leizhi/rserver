@@ -38,7 +38,6 @@ using namespace std;
     参数          ：  (I)    ：pThread -  current object's address
 ******************************************************************************/
 void* CThread::StartRoutine(void* pThread){
-    //CLog* //pSysLogger = CObjectFactory::GetInstance()->GetSysLogger();
     CThread* pThis = (CThread*)pThread;
     try{
         pThis->SetRunningState(true);
@@ -65,7 +64,6 @@ void CThread::InitWork() {
 ******************************************************************************/
 void CThread::Create()
 {
-    //CLog* //pSysLogger = CObjectFactory::GetInstance()->GetSysLogger();
     try{
         // Do some initialisations before starting the real job
         InitWork();
@@ -93,7 +91,6 @@ void CThread::Create()
     函数名        ：  void Stop()
 ******************************************************************************/
 void CThread::Stop() {
-    //CLog* //pSysLogger = CObjectFactory::GetInstance()->GetSysLogger();
     int nRc = pthread_cancel( m_tId );
     if ( nRc < 0 ) {
         printfs(1, "CThread::Stop(%s)..................", GetName());
@@ -102,7 +99,6 @@ void CThread::Stop() {
 }
 
 void CThread::Join() {
-    //CLog* //pSysLogger = CObjectFactory::GetInstance()->GetSysLogger();
     int nRc = pthread_join( m_tId, NULL );
     if ( nRc < 0 ) {
         printfs(1, "CThread::~CThread(%s)..................", GetName());
