@@ -37,8 +37,13 @@ CPacketAnalysisProcess::CPacketAnalysisProcess(HTCPSocket* pRecvSocket)
     返回值        ：  无
 ******************************************************************************/
 CPacketAnalysisProcess::~CPacketAnalysisProcess(){
-    printfs(1,"<CPacketAnalysisProcess::Do()> 析构处理");
-    m_pRecvSocket = NULL;
+
+    if(m_pRecvSocket != NULL) {
+        m_pRecvSocket->Close();
+        delete m_pRecvSocket;
+        m_pRecvSocket = NULL;
+    }
+    
     if(m_pSendSocket != NULL) {
         m_pSendSocket->Close();
         delete m_pSendSocket;
@@ -157,7 +162,6 @@ void CPacketAnalysisProcess::Do(){
         }
         default:
             printfs(1,"<CPacketAnalysisProcess::Do()> Undefined cInfoType! cInfoType:[%c]", headerInfo.nInfoType);
-            return;
             break;
     }
 
