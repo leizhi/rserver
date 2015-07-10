@@ -1,9 +1,9 @@
-/*****************************************************************************/
+ï»¿/*****************************************************************************/
 /*                                                                           */
-/*           ÏµÍ³Ãû        £º        ÄÚÃÉÆøÏó¾ÖºóÌ¨·þÎñ                      */
-/*           ¿Í»§Ãû        £º        ÄÚÃÉÆøÏó¾Ö                              */
-/*           »úÄÜÃû        £º        Ö÷½ø³Ì»úÄÜ                              */
-/*           ³ÌÐòÃû        £º        Weather_Data_service.cpp                */
+/*           ç³»ç»Ÿå        ï¼š        å†…è’™æ°”è±¡å±€åŽå°æœåŠ¡                      */
+/*           å®¢æˆ·å        ï¼š        å†…è’™æ°”è±¡å±€                              */
+/*           æœºèƒ½å        ï¼š        ä¸»è¿›ç¨‹æœºèƒ½                              */
+/*           ç¨‹åºå        ï¼š        Weather_Data_service.cpp                */
 /*                                                                           */
 /*****************************************************************************/
 /*                                                                           */
@@ -24,24 +24,24 @@
 #include "SystemConfigInfo.h"
 
 /******************************************************************************
-    ´¦ÀíÃû        £º  Main´¦Àí
-    º¯ÊýÃû        £º  main(int argc, char* argv[])
-    ²ÎÊý          £º  (I)    £ºargc - ÃüÁîÐÐ²ÎÊý¸öÊý
-                      (I)    £ºargv - ÃüÁîÐÐ²ÎÊýÁÐ±í
-    ·µ»ØÖµ        £º  =  0   £ºÕý³£½áÊø
-                      <> 0   £ºÒì³£½áÊø
+    å¤„ç†å        ï¼š  Mainå¤„ç†
+    å‡½æ•°å        ï¼š  main(int argc, char* argv[])
+    å‚æ•°          ï¼š  (I)    ï¼šargc - å‘½ä»¤è¡Œå‚æ•°ä¸ªæ•°
+                      (I)    ï¼šargv - å‘½ä»¤è¡Œå‚æ•°åˆ—è¡¨
+    è¿”å›žå€¼        ï¼š  =  0   ï¼šæ­£å¸¸ç»“æŸ
+                      <> 0   ï¼šå¼‚å¸¸ç»“æŸ
 ******************************************************************************/
 int main(int argc, char* argv[])
 {
 
-    CProcessFactory*    pFactoryInstance = NULL; /* ´¦ÀíÄ£¿éÊµÀý¹¤³§         */
-    CObjectFactory*     pObjectInstance  = NULL; /* ¶ÔÏóÊµÀý¹¤³§             */
+    CProcessFactory*    pFactoryInstance = NULL; /* å¤„ç†æ¨¡å—å®žä¾‹å·¥åŽ‚         */
+    CObjectFactory*     pObjectInstance  = NULL; /* å¯¹è±¡å®žä¾‹å·¥åŽ‚             */
 
     //CLog* //pSysLogger = NULL;
-    /* È¡µÃÈÕÖ¾²Ù×÷Ä£¿é                                                      */
+    /* å–å¾—æ—¥å¿—æ“ä½œæ¨¡å—                                                      */
     pObjectInstance  = CObjectFactory::GetInstance();
     CChannelItem* pChannelItem = NULL;
-    /* ÃüÁîÐÐ²ÎÊý½âÎö                                                        */
+    /* å‘½ä»¤è¡Œå‚æ•°è§£æž                                                        */
     int c = 0;
     int nCount = 0;
     while ((c = getopt(argc, argv, "c:s:h")) != EOF)
@@ -82,10 +82,10 @@ int main(int argc, char* argv[])
     //pSysLogger = pObjectInstance->GetSysLogger();
     printfs(1, "Start Weather_Data_service Application!");
 
-    /* È¡µÃÃüÁîÐÐ´¦ÀíÄ£¿é                                                    */
+    /* å–å¾—å‘½ä»¤è¡Œå¤„ç†æ¨¡å—                                                    */
     pFactoryInstance = CProcessFactory::GetInstance();
     pChannelItem = new CChannelItem(pConfigInfo->GetRecvPort());
-    /* Æô¶¯ÃüÁîÐÐ´¦ÀíÏß³Ì                                                    */
+    /* å¯åŠ¨å‘½ä»¤è¡Œå¤„ç†çº¿ç¨‹                                                    */
     try{
         printfs(1, "Start pChannelItem->Create()!");
         pChannelItem->Start();
