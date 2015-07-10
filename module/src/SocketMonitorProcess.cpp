@@ -25,7 +25,6 @@
     返回值        ：  无
 ******************************************************************************/
 CSocketMonitorProcess::CSocketMonitorProcess(){
-    //CObjectFactory* pInstance = CObjectFactory::GetInstance();
     m_pRecvSocket             = NULL;
     m_bBreakFlag              = false;
     m_nSocketPort             = -1;
@@ -76,8 +75,6 @@ void CSocketMonitorProcess::Do(){
 
     printfs(1, "Socket monitor process started! Port.[%d]", m_nSocketPort);
 
-    //HSocketThread*    pThread    = NULL;
-
     try{
         // 1.开始Socket监控
         if(m_monitorSocket.CreateReceiveSocket( m_nSocketPort ) == 0){
@@ -86,20 +83,8 @@ void CSocketMonitorProcess::Do(){
         }
 
         int             nRet       = 0;
-        //int             nCount     = 0;
         char            chName[20] = "\0";
-                
-        //CObjectFactory* pInstance  = CObjectFactory::GetInstance();
-        
-        //CObjectContainer<HSocketThread>* pContainer = pInstance->GetThreadContainer();
-
-        /*if (pContainer == NULL){
-            printfs(0, "Create thread container failed !");
-            return;
-        }*/
-
 	pool_init(25);//线程池中最多三个活动线程
-	//int i=0;
         while(1){
             // 2.有新的Socket连接到达
             m_pRecvSocket = new HTCPSocket();
@@ -112,46 +97,13 @@ void CSocketMonitorProcess::Do(){
                 continue;
             }
 
-            printfs(2, "<CSocketMonitorProcess::Do()> Socket Accepted!");
-            // 3.从Thread container中取得空闲的线程
-            //pThread = pContainer->GetObject();
-
-            printfs(2, "<CSocketMonitorProcess::Do()> Thread Getted!");
-            // 4.判断Thread指针是否为空
-            // 4.1如果指针为空，则说明线程容器中的线程总数已经达到系统上限，
-            // 写入这个指针的日志信息，并重新开始Socket监控
-            /*if (pThread == NULL){
-                printfs(0, "Thread container full!");
-                continue;
-            }*/
-
-            // 4.2.1指针不为空，分配新的Thread处理这个Socket
-            //pThread->Reset();
-
-            printfs(2, "<CSocketMonitorProcess::Do()> Thread Resetted!");
-
-            // 4.2.2重置Thread中的Socket信息
-            //pThread->SetTCPSocket(m_pRecvSocket);
-            //sprintf(chName, "Thread.%d", pContainer->GetObjectID());
-            //pThread->SetName(chName);
-
-            //printf("pThread Create: %s\n",chName);
-
             printfs(2, "<CSocketMonitorProcess::Do()> RecvSocket has been set to thread!");
-            // 4.2.3重新启动这个Thread
-            //pThread->Create();
+            //新连接的任务加入线程池并启动
             pool_add_worker(clientprocess, m_pRecvSocket);
-            //i++;
             printfs(2, "<CSocketMonitorProcess::Do()> Thread has been created!");
-            //nCount++;
         }
     }
     catch(...){
-        /*if (pThread != NULL)
-        {
-            pThread->Reset();
-            pThread = NULL;
-        }*/
         printfs(0, "[CSocketMonitorProcess::Do()] [Exception occured]");
     }
 	//等待所有任务完成
