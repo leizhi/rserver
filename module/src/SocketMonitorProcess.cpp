@@ -52,6 +52,10 @@ void *clientprocess(const void *m_pTCPSocket)
 	m_pProcess = (IProcess*)(new CPacketAnalysisProcess((HTCPSocket*)m_pTCPSocket));
 	printfs(1, "m_pProcess 0x%04x",m_pProcess);
 	m_pProcess->Do();
+	//delete m_pTCPSocket;
+	
+	delete m_pProcess;
+	m_pProcess = NULL;
     }catch(exception e){
     	printfs(1, "myprocess exception");
     }
