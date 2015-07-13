@@ -245,11 +245,11 @@ void HTCPSocket::Close(){
         RET = ::shutdown(m_nsocket_tcp, 2);
 
         if(RET!=0){
-            printfs(0, "Close m_nsocket_tcp ERROR %d",errno);
+            printfs(0, "shutdown m_nsocket_tcp ERROR %d",errno);
         }
         RET = ::close(m_nsocket_tcp);
         if(RET != 0) {
-            printfs(0, "Close m_nsocket_tcp ERROR %d",errno);
+            printfs(0, "close m_nsocket_tcp ERROR %d",errno);
         }
         m_bInitTCP = false;
     }
