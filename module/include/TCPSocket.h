@@ -39,7 +39,6 @@ private:
     int  CheckIPAddr(char* pIPAddr);
     void SetSocketAddr(char* pIPAddr, int nPort);
     void TimeoutTCP(int nSec, bool isRecive);
-    void WriteLog(int nlevel, const char * fmt, ...);
 public :
     HTCPSocket();
     virtual ~HTCPSocket();
