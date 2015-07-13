@@ -39,18 +39,21 @@ CPacketAnalysisProcess::CPacketAnalysisProcess(HTCPSocket* pRecvSocket)
 CPacketAnalysisProcess::~CPacketAnalysisProcess(){
 
     if(m_pRecvSocket != NULL) {
+    	printfs(1, " close m_pRecvSocket 0x%04x",m_pRecvSocket);
         m_pRecvSocket->Close();
         delete m_pRecvSocket;
         m_pRecvSocket = NULL;
     }
     
     if(m_pSendSocket != NULL) {
+        printfs(1, " close m_pSendSocket 0x%04x",m_pSendSocket);
         m_pSendSocket->Close();
         delete m_pSendSocket;
         m_pSendSocket = NULL;
     }
 
     if(m_pProcess != NULL) {
+        printfs(1, " close m_pSendSocket 0x%04x",m_pProcess);
         delete m_pProcess;
         m_pProcess = NULL;
     }
@@ -69,23 +72,23 @@ void CPacketAnalysisProcess::Do(){
     int nRet         = 0;
     stHeader         headerInfo;
     memset(&headerInfo, 0x00, sizeof(stHeader));
-    	printfs(1, "CPacketAnalysisProcess Do1");
+
     /* Socket端口包解析                                                  */
-        	printfs(1, "0x%04x",m_pRecvSocket);
+    printfs(1, "m_pRecvSocket:0x%04x",m_pRecvSocket);
+
     nRet = m_pRecvSocket->Receive(&headerInfo, sizeof(stHeader));
-    	printfs(1, "CPacketAnalysisProcess Do2");
     if(nRet == 0) {
         printfs(0,"<CPacketAnalysisProcess::Do()> Receive packet time out");
         m_pRecvSocket->Close();
         return;
     }
-    	printfs(1, "CPacketAnalysisProcess Do3");
+
     if(nRet == -1) {
         printfs(0, "<CPacketAnalysisProcess::Do()> Receive packet failed");
         m_pRecvSocket->Close();
         return;
     }
-	printfs(1, "CPacketAnalysisProcess Do4");
+
     switch(headerInfo.nInfoType){
 /* 气象数据组成结构——小时数据                                              */
         case INFO_TYPE_ELEMENTS_HOUR_DATA:
