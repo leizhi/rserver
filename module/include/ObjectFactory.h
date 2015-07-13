@@ -62,7 +62,6 @@ private:
     //CObjectContainer<HSocketThread>* m_pObjectContainer;     /*  */
 
     CSystemConfigInfo*            m_pSystemConfig;
-    //CLog*                  m_pSysLogger;
     HConfigFile*                  m_pConfigFile;
     WDS_DBHelper*                 m_pWDSDBHelper;
     CMySQLPool*                   m_pMySQLPool;

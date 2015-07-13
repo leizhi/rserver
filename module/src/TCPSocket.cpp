@@ -239,11 +239,17 @@ int HTCPSocket::Bind(char* pIPAddr, int nPort) {
     返回值        ：  无
 ******************************************************************************/
 void HTCPSocket::Close(){
+    int RET = -1;
     printfs(2, "Close()");
     if (m_nsocket_tcp > 0) {
-        ::shutdown(m_nsocket_tcp, 2);
-        if(::close(m_nsocket_tcp) < 0) {
-            printfs(0, "Close()");
+        RET = ::shutdown(m_nsocket_tcp, 2);
+
+        if(RET!=0){
+            printfs(0, "Close m_nsocket_tcp ERROR %d",errno);
+        }
+        RET = ::close(m_nsocket_tcp);
+        if(RET != 0) {
+            printfs(0, "Close m_nsocket_tcp ERROR %d",errno);
         }
         m_bInitTCP = false;
     }

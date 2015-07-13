@@ -40,7 +40,6 @@ using namespace std;
 class CWDSStationImageProcess : public IProcess {
 
 private:
-    //CLog*            m_pSysLogger;
     HTCPSocket*      m_pSendSocket;
     HTCPSocket*      m_pRecvSocket;
     int              m_nFuncType;

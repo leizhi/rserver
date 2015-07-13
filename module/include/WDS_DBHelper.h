@@ -22,7 +22,6 @@
 class WDS_DBHelper : public MysqlHelper
 {
 private:
-    //CLog*    m_pSysLogger;
 
     int      IsUnknownTime(char* pTime, char* pTempTime);
 public:

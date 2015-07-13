@@ -30,7 +30,6 @@ private:
     struct  sockaddr_in  m_SockAddr;
     struct  sockaddr_in6 m_SockAddr6;
 
-    ////CLog*   m_pSysLogger;
 
     int  Open();
     int  Connect(char* pIPAddr, int nPort);

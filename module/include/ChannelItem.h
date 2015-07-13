@@ -49,7 +49,6 @@ private:
     int                    m_nSocketPort;
     CSocketMonitorProcess* m_pSocketMonitor;
     HProcessThread*        m_pSocketMonitorThread;
-    //CLog*                  m_pSysLogger;
 
     int     Init();
     int     CreateProcess();

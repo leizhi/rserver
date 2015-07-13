@@ -43,7 +43,6 @@ class CSocketMonitorProcess : public IProcess {
 private:
     bool                   m_bBreakFlag;
     int                    m_nSocketPort;
-    //CLog*                  m_pSysLogger;
     HTCPSocket*            m_pRecvSocket;
     HTCPSocket             m_monitorSocket;
     int                    m_nFuncType;

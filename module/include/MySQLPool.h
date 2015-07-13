@@ -36,7 +36,6 @@ class CMySQLPool
     unsigned int m_port;  //端口
 
     private:
-    //CLog * m_pSysLogger;
     CMutex sMutex;
 };
 #endif /* MYSQLPOOL_H_ */ 

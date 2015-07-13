@@ -39,7 +39,6 @@ using namespace std;
 class CWDSMinuteDataProcess : public IProcess {
 
 private:
-    //CLog*            m_pSysLogger;
     HTCPSocket*      m_pSendSocket;
     HTCPSocket*      m_pRecvSocket;
     int              m_nFuncType;

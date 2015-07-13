@@ -77,7 +77,6 @@ private:
     char * USERNAME;
     char * PASSWORD;
     char * DBNAME;
-    //CLog * m_pSysLogger;
 };
 
 #endif /* MYSQLHELPER_H_ */ 
