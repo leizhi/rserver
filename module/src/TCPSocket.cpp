@@ -243,8 +243,8 @@ int HTCPSocket::Bind(char* pIPAddr, int nPort) {
 ******************************************************************************/
 void HTCPSocket::Close(){
     int RET = -1;
-    printfs(2, "<HTCPSocket> Close() %d",m_nsocket_tcp);
-    if (m_nsocket_tcp > 0) {
+    printfs(2, "<HTCPSocket> Close():%d IsClosed:%d",m_nsocket_tcp,IsClosed());
+    if (!IsClosed()) {
         RET = ::shutdown(m_nsocket_tcp, SHUT_RDWR);
 
         if(RET!=0){
