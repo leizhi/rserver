@@ -192,7 +192,7 @@ int HTCPSocket::Accept(HTCPSocket *pServer){
     }
     m_bInitTCP = true;
 
-    printfs(2, "Accept m_nsocket_tcp:0x%04x)",m_nsocket_tcp);
+    printfs(2, "Accept pid:%u m_nsocket_tcp:%u",pthread_self(),m_nsocket_tcp);
     printfs(2, "Accept[%s]", "End");
     return 1;
 }
@@ -247,11 +247,11 @@ void HTCPSocket::Close(){
         RET = ::shutdown(m_nsocket_tcp, SHUT_RDWR);
 
         if(RET!=0){
-            printfs(0, "shutdown m_nsocket_tcp:0x%04x ERROR %d",m_nsocket_tcp,errno);
+            printfs(0, "pid:%u m_nsocket_tcp:%u shutdown ERROR %d",pthread_self(),m_nsocket_tcp,errno);
         }
         RET = ::close(m_nsocket_tcp);
         if(RET != 0) {
-            printfs(0, "close m_nsocket_tcp:0x%04x ERROR %d",m_nsocket_tcp,errno);
+            printfs(0, "pid:%u m_nsocket_tcp:%u close ERROR %d",pthread_self(),m_nsocket_tcp,errno);
         }
         m_bInitTCP = false;
     }
