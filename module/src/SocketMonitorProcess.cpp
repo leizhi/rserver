@@ -84,7 +84,7 @@ void CSocketMonitorProcess::Do(){
 
         int             nRet       = 0;
         char            chName[20] = "\0";
-	pool_init(25);//线程池中最多三个活动线程
+	    pool_init(25);//线程池中最多三个活动线程
         while(1){
             // 2.有新的Socket连接到达
             m_pRecvSocket = new HTCPSocket();

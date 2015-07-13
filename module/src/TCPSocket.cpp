@@ -242,14 +242,14 @@ void HTCPSocket::Close(){
     int RET = -1;
     printfs(2, "Close()");
     if (m_nsocket_tcp > 0) {
-        RET = ::shutdown(m_nsocket_tcp, 2);
+        RET = ::shutdown(m_nsocket_tcp, SHUT_RDWR);
 
         if(RET!=0){
-            printfs(0, "shutdown m_nsocket_tcp ERROR %d",errno);
+            printfs(0, "shutdown m_nsocket_tcp:0x%04x ERROR %d",m_nsocket_tcp,errno);
         }
         RET = ::close(m_nsocket_tcp);
         if(RET != 0) {
-            printfs(0, "close m_nsocket_tcp ERROR %d",errno);
+            printfs(0, "close m_nsocket_tcp:0x%04x ERROR %d",m_nsocket_tcp,errno);
         }
         m_bInitTCP = false;
     }
