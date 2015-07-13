@@ -47,10 +47,10 @@ void *clientprocess(const void *m_pTCPSocket)
 {
     try{
 	IProcess* m_pProcess = NULL;
-	printfs(1, "m_pTCPSocket 0x%04x",m_pTCPSocket);
-	
+
 	m_pProcess = (IProcess*)(new CPacketAnalysisProcess((HTCPSocket*)m_pTCPSocket));
-	printfs(1, "m_pProcess 0x%04x",m_pProcess);
+	printfs(0, "pid:%u m_pProcess:0x%04x m_pTCPSocket:0x%04x",pthread_self(),m_pProcess,m_pTCPSocket);
+
 	m_pProcess->Do();
 
 	delete m_pProcess;
@@ -89,8 +89,7 @@ void CSocketMonitorProcess::Do(){
             // 2.有新的Socket连接到达
             m_pRecvSocket = new HTCPSocket();
             nRet = m_pRecvSocket->Accept(&m_monitorSocket);
-
-            printfs(1, "<CSocketMonitorProcess::Do()> New socket arrived!");
+            printfs(1, "<CSocketMonitorProcess::Do()> New socket arrived! %u",m_pRecvSocket->get_m_nsocket_tcp());
 
             if( nRet != 1 ) {
                 printfs(0, "[%s] [Accept failed]", "CSocketMonitorProcess::Do()");

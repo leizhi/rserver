@@ -74,7 +74,7 @@ void CPacketAnalysisProcess::Do(){
     memset(&headerInfo, 0x00, sizeof(stHeader));
 
     /* Socket端口包解析                                                  */
-    printfs(1, "m_pRecvSocket:0x%04x",m_pRecvSocket);
+    printfs(1, "m_pRecvSocket:0x%04x %u",m_pRecvSocket,m_pRecvSocket->get_m_nsocket_tcp());
 
     nRet = m_pRecvSocket->Receive(&headerInfo, sizeof(stHeader));
     if(nRet == 0) {

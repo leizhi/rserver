@@ -51,6 +51,8 @@ public :
     bool CreateReceiveSocket(char* pInIPAddr, int nInPort);
     bool CreateReceiveSocket(char* pInIPAddr, int nInPort, int nTimeout);
     int Accept(HTCPSocket *serveur);
+    unsigned int get_m_nsocket_tcp();
+
     virtual int Send(const char *, size_t);
     virtual int Receive(void *Buffer, long Size);
 };

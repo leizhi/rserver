@@ -533,6 +533,9 @@ void HTCPSocket::TimeoutTCP(int nSec, bool isRecive){
     }
 }
 
+unsigned int HTCPSocket::get_m_nsocket_tcp(){
+    return m_nsocket_tcp;
+}
 /******************************************************************************
     End
 ******************************************************************************/
