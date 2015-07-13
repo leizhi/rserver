@@ -47,9 +47,12 @@ void *clientprocess(const void *m_pTCPSocket)
 {
     try{
 	IProcess* m_pProcess = NULL;
+    HTCPSocket *tcpp = NULL;
 
-	m_pProcess = (IProcess*)(new CPacketAnalysisProcess((HTCPSocket*)m_pTCPSocket));
-	printfs(0, "pid:%u m_pProcess:0x%04x m_pTCPSocket:0x%04x",pthread_self(),m_pProcess,m_pTCPSocket);
+    tcpp = (HTCPSocket*)m_pTCPSocket;
+	m_pProcess = (IProcess*)(new CPacketAnalysisProcess(tcpp));
+	printfs(0, "clientprocess pid:%u m_pProcess:0x%04x m_pTCPSocket:0x%04x m_nsocket_tcp:%u",
+	    pthread_self(),m_pProcess,tcpp,tcpp->get_m_nsocket_tcp());
 
 	m_pProcess->Do();
 

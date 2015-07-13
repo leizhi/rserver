@@ -157,7 +157,7 @@ int HTCPSocket::Accept(HTCPSocket *pServer){
         return -1;
     }
 
-    printfs(2, "Accept[%s]", "Start");
+    printfs(2, "HTCPSocket Accept[%s]", "Start");
     if(m_bByIPv6) {
         l = sizeof(m_SockAddr6);
         m_nsocket_tcp = ::accept(pServer->m_nsocket_tcp, (sockaddr*)&m_SockAddr6, &l);
@@ -166,12 +166,14 @@ int HTCPSocket::Accept(HTCPSocket *pServer){
         m_nsocket_tcp = ::accept(pServer->m_nsocket_tcp, (sockaddr*)&m_SockAddr, &l);
     }
 
+    printfs(2, "HTCPSocket Accept pid:%u m_nsocket_tcp:%u",pthread_self(),m_nsocket_tcp);
+    
     if (m_nsocket_tcp == -1) {
         if( errno == EAGAIN ) {
-            printfs(0, "Accept[connection timeout])");
+            printfs(0, "HTCPSocket Accept[connection timeout])");
             return 0;
         } else {
-            printfs(0, "Accept[connection error: %d]",errno);
+            printfs(0, "HTCPSocket Accept[connection error: %d]",errno);
             return -1;
         }
     }
@@ -179,7 +181,7 @@ int HTCPSocket::Accept(HTCPSocket *pServer){
     // Set the TCP_NODELAY option(Server Side)
     TCPent = getprotobyname("tcp");
     if (TCPent == NULL) {
-        printfs(0, "Accept[%s]", "getprotobyname");
+        printfs(0, "HTCPSocket Accept[%s]", "getprotobyname");
         return 0;
     }
     if (setsockopt(m_nsocket_tcp,
@@ -187,13 +189,12 @@ int HTCPSocket::Accept(HTCPSocket *pServer){
                         TCP_NODELAY,
                         (char *) &optval,
                         sizeof(optval))) {
-        printfs(0, "Accept[%s]", "setsockopt TCP_NODELAY");
+        printfs(0, "HTCPSocket Accept[%s]", "setsockopt TCP_NODELAY");
         return 0;
     }
     m_bInitTCP = true;
 
-    printfs(2, "Accept pid:%u m_nsocket_tcp:%u",pthread_self(),m_nsocket_tcp);
-    printfs(2, "Accept[%s]", "End");
+    printfs(2, "HTCPSocket Accept[%s]", "End");
     return 1;
 }
 
