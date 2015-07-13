@@ -88,7 +88,7 @@ int HTCPSocket::Connect(char* pIPAddr, int nPort) {
     int Result;
     struct protoent *TCPent;
     int optval = 1;
-    WriteLog(2, "[%s][%s]", "Connect", "Start");
+    printfs(2, "[%s][%s]", "Connect", "Start");
     if(m_bInitTCP){return 0;}    //
     SetSocketAddr(pIPAddr, nPort);
     /* IPv6格式的IP地址和Port设定                                            */
@@ -100,13 +100,13 @@ int HTCPSocket::Connect(char* pIPAddr, int nPort) {
         Result = ::connect(m_nsocket_tcp, (sockaddr*)&m_SockAddr, sizeof(m_SockAddr));
     }
     if (Result < 0) {
-        WriteLog(0, "Connect.[%s]", "connect");
+        printfs(0, "Connect.[%s]", "connect");
             return 0;
     }
     // Set the TCP_NODELAY option(Client Side)
     TCPent = getprotobyname("tcp");
     if (TCPent == NULL) {
-        WriteLog(0, "Connect[%s]", "getprotobyname");
+        printfs(0, "Connect[%s]", "getprotobyname");
         return -1;
     }
     // 只要系统缓冲区有数据就立刻发送
@@ -115,10 +115,10 @@ int HTCPSocket::Connect(char* pIPAddr, int nPort) {
                     TCP_NODELAY,
                     (char *) &optval,
                     sizeof(optval))) {
-        WriteLog(0, "Connect[%s]", "setsockopt TCP_NODELAY");
+        printfs(0, "Connect[%s]", "setsockopt TCP_NODELAY");
         return -1;
     }
-    WriteLog(2, "Connect[%s]", "End.");
+    printfs(2, "Connect[%s]", "End.");
     return 1;
 }
 
@@ -131,7 +131,7 @@ int HTCPSocket::Connect(char* pIPAddr, int nPort) {
 ******************************************************************************/
 int HTCPSocket::Listen(unsigned long howMuch){
     if(m_bInitTCP){return 0;}
-    WriteLog(2, "Listen[%s]", "Start");
+    printfs(2, "Listen[%s]", "Start");
     return ::listen(m_nsocket_tcp, howMuch) >= 0;
 }
 
@@ -157,7 +157,7 @@ int HTCPSocket::Accept(HTCPSocket *pServer){
         return -1;
     }
 
-    WriteLog(2, "Accept[%s]", "Start");
+    printfs(2, "Accept[%s]", "Start");
     if(m_bByIPv6) {
         l = sizeof(m_SockAddr6);
         m_nsocket_tcp = ::accept(pServer->m_nsocket_tcp, (sockaddr*)&m_SockAddr6, &l);
@@ -168,10 +168,10 @@ int HTCPSocket::Accept(HTCPSocket *pServer){
 
     if (m_nsocket_tcp == -1) {
         if( errno == EAGAIN ) {
-            WriteLog(0, "Accept[connection timeout])");
+            printfs(0, "Accept[connection timeout])");
             return 0;
         } else {
-            WriteLog(0, "Accept[connection error]");
+            printfs(0, "Accept[connection error: %d]",errno);
             return -1;
         }
     }
@@ -179,7 +179,7 @@ int HTCPSocket::Accept(HTCPSocket *pServer){
     // Set the TCP_NODELAY option(Server Side)
     TCPent = getprotobyname("tcp");
     if (TCPent == NULL) {
-        WriteLog(0, "Accept[%s]", "getprotobyname");
+        printfs(0, "Accept[%s]", "getprotobyname");
         return 0;
     }
     if (setsockopt(m_nsocket_tcp,
@@ -187,11 +187,11 @@ int HTCPSocket::Accept(HTCPSocket *pServer){
                         TCP_NODELAY,
                         (char *) &optval,
                         sizeof(optval))) {
-        WriteLog(0, "Accept[%s]", "setsockopt TCP_NODELAY");
+        printfs(0, "Accept[%s]", "setsockopt TCP_NODELAY");
         return 0;
     }
     m_bInitTCP = true;
-    WriteLog(2, "Accept[%s]", "End");
+    printfs(2, "Accept[%s]", "End");
     return 1;
 }
 
@@ -208,13 +208,13 @@ int HTCPSocket::Bind(char* pIPAddr, int nPort) {
     int  loop = 1;
     if(m_bInitTCP){return 0;}
     
-    //WriteLog(2, "Bind[%s]", "Start");
+    //printfs(2, "Bind[%s]", "Start");
     
     SetSocketAddr(pIPAddr, nPort);
     if(setsockopt(m_nsocket_tcp, SOL_SOCKET, SO_REUSEADDR, 
                   &loop, sizeof(loop)) < 0)
     { 
-        WriteLog(0, "setsockopt:SO_REUSEADDR");
+        printfs(0, "setsockopt:SO_REUSEADDR");
         return 0;
     }
     if(m_bByIPv6) {
@@ -225,10 +225,10 @@ int HTCPSocket::Bind(char* pIPAddr, int nPort) {
         Result = ::bind(m_nsocket_tcp, (sockaddr *)&m_SockAddr, Length);
     }
     if(Result < 0) {
-        WriteLog(0, "[%s]", "bind");
+        printfs(0, "[%s]", "bind");
         return 0;
     }
-    //WriteLog(2, "Bind[%s]", "End");
+    //printfs(2, "Bind[%s]", "End");
     return 1;
 }
 
@@ -239,11 +239,11 @@ int HTCPSocket::Bind(char* pIPAddr, int nPort) {
     返回值        ：  无
 ******************************************************************************/
 void HTCPSocket::Close(){
-    WriteLog(2, "Close()");
+    printfs(2, "Close()");
     if (m_nsocket_tcp > 0) {
         ::shutdown(m_nsocket_tcp, 2);
         if(::close(m_nsocket_tcp) < 0) {
-            WriteLog(0, "Close()");
+            printfs(0, "Close()");
         }
         m_bInitTCP = false;
     }
@@ -274,7 +274,7 @@ int HTCPSocket::CheckIPAddr(char* pIPAddr)
         return 0;
     }
     else {
-        WriteLog(0, "CheckIPAddr[%s]", "inet_pton");
+        printfs(0, "CheckIPAddr[%s]", "inet_pton");
         return -1;    /* IP地址错误 */
     }
 }
@@ -327,23 +327,23 @@ bool HTCPSocket::CreateSendSocket(char* pOutIPAddr,
                                   int nOutPort,
                                   int nTimeout) {
     if(m_bInitTCP){return false;}
-    WriteLog(2, "CreateSendSocket[Port:%d][IP:%s]", nOutPort, pOutIPAddr);
+    printfs(2, "CreateSendSocket[Port:%d][IP:%s]", nOutPort, pOutIPAddr);
     
     if(CheckIPAddr(pOutIPAddr) < 0) {
-        WriteLog(0, "[%s][%s][%d]", "CheckIPAddr()", pOutIPAddr, nOutPort);
+        printfs(0, "[%s][%s][%d]", "CheckIPAddr()", pOutIPAddr, nOutPort);
         return false;
     }
     if (!Open()) {
-        WriteLog(0, "[%s]", "Open()");
+        printfs(0, "[%s]", "Open()");
         return false;
     }
     if (!Connect(pOutIPAddr, nOutPort)) {
-        WriteLog(0, "[%s][%s][%d]", "Connect()", pOutIPAddr, nOutPort);
+        printfs(0, "[%s][%s][%d]", "Connect()", pOutIPAddr, nOutPort);
         return false;
     }
     TimeoutTCP(nTimeout, false);
     m_bInitTCP = true;
-    WriteLog(2, "CreateSendSocket[%s]", "End");
+    printfs(2, "CreateSendSocket[%s]", "End");
     return true;
 }
 
@@ -397,31 +397,31 @@ bool HTCPSocket::CreateReceiveSocket(char* pInIPAddr, int nInPort, int nTimeout)
     
     if(m_bInitTCP){return false;}
     
-    WriteLog(2, "CreateReceiveSocket[Port:%d][IP:%s]", nInPort, pInIPAddr);
+    printfs(2, "CreateReceiveSocket[Port:%d][IP:%s]", nInPort, pInIPAddr);
     if(CheckIPAddr(pInIPAddr) < 0) {
-        WriteLog(0, "[%s]", "CheckIPAddr()");
+        printfs(0, "[%s]", "CheckIPAddr()");
         return false;
     }
     printf("CheckIPAddr()\n");
     
     if (!Open()) {
-        WriteLog(0, "[%s]", "Open()");
+        printfs(0, "[%s]", "Open()");
         return false;
     }
     printf("Open()\n");
     if (!Bind(pInIPAddr, nInPort)) {
-        WriteLog(0, "[%s]", "Bind()");
+        printfs(0, "[%s]", "Bind()");
         return false;
     }
     printf("Bind()\n");
     TimeoutTCP(nTimeout, true);
     if (!Listen(5)) {
-        WriteLog(0, "[%s]", "Listen()");
+        printfs(0, "[%s]", "Listen()");
         return false;
     }
     printf("Listen()\n");
     
-    WriteLog(2, "CreateReceiveSocket[%s]", "End");
+    printfs(2, "CreateReceiveSocket[%s]", "End");
     m_bInitTCP = true;
     return true;
 }
@@ -439,22 +439,22 @@ int HTCPSocket::Send(const char *buffer, size_t size){
     long total_sent = 0;
     long expected_size = size;
     if(!m_bInitTCP){return -1;}
-    WriteLog(2, "Send: Beginning to send TCP message...(Size %ld)", size);
+    printfs(2, "Send: Beginning to send TCP message...(Size %ld)", size);
     while (total_sent < expected_size) {
         int sent = ::send(m_nsocket_tcp, buffer + total_sent,
                           expected_size - total_sent, 0);
         if (sent <= 0) {
             if( errno == EAGAIN ) {
-                WriteLog(0, "[%s]", "Timeout");
+                printfs(0, "[%s]", "Timeout");
                 return 0;
             } else {
-                WriteLog(0, "[%s]", "send");
+                printfs(0, "[%s]", "send");
                 return -1;
             }
         }
         total_sent += sent;
     }
-    WriteLog(2, "Sent %ld bytes out of %ld.", 
+    printfs(2, "Sent %ld bytes out of %ld.", 
              total_sent, expected_size);
     return 1;
 }
@@ -472,32 +472,32 @@ int HTCPSocket::Receive(void *buffer, long size) {
     if(!m_bInitTCP){return -1;}
     long nReceived = 0;
     long RBLength = 0;
-    WriteLog(2, "Beginning to receive TCP message...(Size %ld)", size);
+    printfs(2, "Beginning to receive TCP message...(Size %ld)", size);
     while (RBLength < size)
     {
         nReceived = recv(m_nsocket_tcp, 
                         (char *) buffer + RBLength, size - RBLength, 0);
         if (nReceived <= 0) {
             if( errno == EAGAIN ) {
-                WriteLog(0, "[%s]", "Receive Timeout");
+                printfs(0, "[%s]", "Receive Timeout");
                 return 0;
             } else {
-                WriteLog(0, "[%s]", "recv");
+                printfs(0, "[%s]", "recv");
                 return -1;
             }
         }
         RBLength += nReceived;
         if (nReceived <= 0) {
             if( errno == EAGAIN ) {
-                WriteLog(0, "[%s]", "Receive Timeout");
+                printfs(0, "[%s]", "Receive Timeout");
                 return 0;
             } else {
-                WriteLog(0, "[%s]", "recv");
+                printfs(0, "[%s]", "recv");
                 return -1;
             }
         }
     }
-    WriteLog(2, "Received %ld bytes out of %ld.", RBLength, size);
+    printfs(2, "Received %ld bytes out of %ld.", RBLength, size);
     return 1;
 }
 
@@ -525,15 +525,6 @@ void HTCPSocket::TimeoutTCP(int nSec, bool isRecive){
     }
 }
 
-/******************************************************************************
-    处理名        ：  按照fmt参数的内容进行日志输出处理
-    函数名        ：  Add (unsigned int nlevel, const char * fmt, ...)
-    参数          ：  (I) : nlevel 执行日志的级别(警告/情报/调试/全部)
-                      (I) : fmt    日志输出的内容
-    返回值        ：  无
-******************************************************************************/
-void HTCPSocket::WriteLog(int nlevel, const char * fmt, ...) {
-}
 /******************************************************************************
     End
 ******************************************************************************/

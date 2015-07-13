@@ -94,6 +94,7 @@ void CSocketMonitorProcess::Do(){
 
             if( nRet != 1 ) {
                 printfs(0, "[%s] [Accept failed]", "CSocketMonitorProcess::Do()");
+                sleep(3);
                 continue;
             }
 
