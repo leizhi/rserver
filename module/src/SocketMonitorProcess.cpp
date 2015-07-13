@@ -92,7 +92,7 @@ void CSocketMonitorProcess::Do(){
             // 2.有新的Socket连接到达
             m_pRecvSocket = new HTCPSocket();
             nRet = m_pRecvSocket->Accept(&m_monitorSocket);
-            printfs(1, "<CSocketMonitorProcess::Do()> New socket arrived! %u",m_pRecvSocket->get_m_nsocket_tcp());
+            printfs(1, "<CSocketMonitorProcess::Do()> New socket arrived!");
 
             if( nRet != 1 ) {
                 printfs(0, "[%s] [Accept failed]", "CSocketMonitorProcess::Do()");

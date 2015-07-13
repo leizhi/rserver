@@ -243,16 +243,16 @@ int HTCPSocket::Bind(char* pIPAddr, int nPort) {
 ******************************************************************************/
 void HTCPSocket::Close(){
     int RET = -1;
-    printfs(2, "Close()");
+    printfs(2, "<HTCPSocket> Close()");
     if (m_nsocket_tcp > 0) {
         RET = ::shutdown(m_nsocket_tcp, SHUT_RDWR);
 
         if(RET!=0){
-            printfs(0, "pid:%u m_nsocket_tcp:%u shutdown ERROR %d",pthread_self(),m_nsocket_tcp,errno);
+            printfs(0, "<HTCPSocket> pid:%u m_nsocket_tcp:%u shutdown ERROR %d",pthread_self(),m_nsocket_tcp,errno);
         }
         RET = ::close(m_nsocket_tcp);
         if(RET != 0) {
-            printfs(0, "pid:%u m_nsocket_tcp:%u close ERROR %d",pthread_self(),m_nsocket_tcp,errno);
+            printfs(0, "<HTCPSocket> pid:%u m_nsocket_tcp:%u close ERROR %d",pthread_self(),m_nsocket_tcp,errno);
         }
         m_bInitTCP = false;
     }
