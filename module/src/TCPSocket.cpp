@@ -191,6 +191,8 @@ int HTCPSocket::Accept(HTCPSocket *pServer){
         return 0;
     }
     m_bInitTCP = true;
+
+    printfs(2, "Accept m_nsocket_tcp:0x%04x)",m_nsocket_tcp);
     printfs(2, "Accept[%s]", "End");
     return 1;
 }
