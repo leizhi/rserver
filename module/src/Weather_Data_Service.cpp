@@ -23,6 +23,13 @@
 #include "ProcessThread.h"
 #include "SystemConfigInfo.h"
 
+#include <signal.h>
+
+void SigRoutine(int iSignNum)
+{
+    printfs(0,"capture signal number:%d\n",iSignNum);
+}
+
 /******************************************************************************
     处理名        ：  Main处理
     函数名        ：  main(int argc, char* argv[])
@@ -34,6 +41,139 @@
 int main(int argc, char* argv[])
 {
 
+  if(signal(SIGHUP,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGHUP"); 
+  }
+  if(signal(SIGINT,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGINT"); 
+  } 
+  if(signal(SIGQUIT,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGQUIT"); 
+  } 
+  if(signal(SIGILL,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGILL"); 
+  } 
+  if(signal(SIGTRAP,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGTRAP"); 
+  } 
+  if(signal(SIGBUS,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGBUS"); 
+  } 
+  if(signal(SIGFPE,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGFPE"); 
+  } 
+  if(signal(SIGKILL,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGKILL"); 
+  } 
+  if(signal(SIGUSR1,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGUSR1"); 
+  } 
+  if(signal(SIGSEGV,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGSEGV"); 
+  } 
+  if(signal(SIGUSR2,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGUSR2"); 
+  } 
+  if(signal(SIGPIPE,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGPIPE"); 
+  } 
+  if(signal(SIGALRM,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGALRM"); 
+  } 
+  if(signal(SIGTERM,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGTERM"); 
+  }  
+  if(signal(SIGSTKFLT,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for  SIGSTKFLT"); 
+  } 
+  if(signal(SIGCHLD,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGCHLD"); 
+  } 
+  if(signal(SIGCONT,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGCONT"); 
+  } 
+  if(signal(SIGSTOP,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGSTOP"); 
+  } 
+  if(signal(SIGTSTP,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGTSTP"); 
+  } 
+  if(signal(SIGTTIN,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGTTIN"); 
+  } 
+  if(signal(SIGTTOU,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGTTOU"); 
+  } 
+  if(signal(SIGURG,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGURG"); 
+  } 
+  if(signal(SIGXCPU,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGXCPU"); 
+  } 
+  if(signal(SIGXFSZ,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGXFSZ"); 
+  } 
+  if(signal(SIGVTALRM,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGVTALRM"); 
+  } 
+  if(signal(SIGPROF,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGPROF"); 
+  } 
+  if(signal(SIGWINCH,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGWINCH"); 
+  } 
+  if(signal(SIGIO,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGIO"); 
+  } 
+  if(signal(SIGPWR,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGPWR"); 
+  } 
+  if(signal(SIGSYS,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGSYS"); 
+  } 
+  if(signal(SIGRTMIN,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGRTMIN"); 
+  } 
+  if(signal(SIGRTMIN+1,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGRTMIN+1"); 
+  } 
+  if(signal(SIGRTMIN+2,SigRoutine) == SIG_ERR) 
+  { 
+      printfs(0,"coundn't register signal handler for SIGRTMIN+2"); 
+  } 
+  
     CProcessFactory*    pFactoryInstance = NULL; /* 处理模块实例工厂         */
     CObjectFactory*     pObjectInstance  = NULL; /* 对象实例工厂             */
 
