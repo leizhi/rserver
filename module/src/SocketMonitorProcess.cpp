@@ -91,18 +91,34 @@ void CSocketMonitorProcess::Do(){
         while(1){
             // 2.有新的Socket连接到达
             m_pRecvSocket = new HTCPSocket();
+
             nRet = m_pRecvSocket->Accept(&m_monitorSocket);
             printfs(1, "<CSocketMonitorProcess::Do()> New socket arrived!");
 
             if( nRet != 1 ) {
                 printfs(0, "[%s] [Accept failed]", "CSocketMonitorProcess::Do()");
+                if(m_pRecvSocket!=NULL) {
+                    delete m_pRecvSocket;
+                    m_pRecvSocket = NULL;
+                }
                 sleep(3);
                 continue;
             }
 
             printfs(2, "<CSocketMonitorProcess::Do()> RecvSocket has been set to thread!");
             //新连接的任务加入线程池并启动
-            pool_add_worker(clientprocess, m_pRecvSocket);
+            nRet = pool_add_worker(clientprocess, m_pRecvSocket);
+            //线程池满
+            if(nRet==0){
+                if(m_pRecvSocket!=NULL) {
+                    delete m_pRecvSocket;
+                    m_pRecvSocket = NULL;
+                }
+                printfs(2, "<CSocketMonitorProcess::Do()> 服务器停止接受客户端3s!");
+                sleep(3);
+                continue;
+            }
+
             printfs(2, "<CSocketMonitorProcess::Do()> Thread has been created!");
         }
     }

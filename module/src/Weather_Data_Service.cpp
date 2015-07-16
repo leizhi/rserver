@@ -23,7 +23,7 @@
 #include "ProcessThread.h"
 #include "SystemConfigInfo.h"
 
-#include <signal.h>
+//#include <signal.h>
 
 void SigRoutine(int iSignNum)
 {
@@ -40,7 +40,7 @@ void SigRoutine(int iSignNum)
 ******************************************************************************/
 int main(int argc, char* argv[])
 {
-
+/*
   if(signal(SIGHUP,SigRoutine) == SIG_ERR) 
   { 
       printfs(0,"coundn't register signal handler for SIGHUP"); 
@@ -173,7 +173,7 @@ int main(int argc, char* argv[])
   { 
       printfs(0,"coundn't register signal handler for SIGRTMIN+2"); 
   } 
-  
+  */
     CProcessFactory*    pFactoryInstance = NULL; /* 处理模块实例工厂         */
     CObjectFactory*     pObjectInstance  = NULL; /* 对象实例工厂             */
 
