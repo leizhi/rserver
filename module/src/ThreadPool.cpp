@@ -50,7 +50,7 @@ int pool_add_worker(void * (*process) (const void *arg), void *arg)
   
      assert(pool->queue_head != NULL);  
   
-     pool->cur_queue_size++;  
+     pool->cur_queue_size++;
      pthread_mutex_unlock (&(pool->queue_lock));  
     //好了，等待队列中有任务了，唤醒一个等待线程； 
      //注意如果所有线程都在忙碌，这句没有任何作用
@@ -143,6 +143,10 @@ void *thread_routine(void *arg)
      pthread_exit(NULL);  
 }
 
+int pool_free()  
+{
+	return pool->max_thread_num - pool->cur_queue_size;
+}
 /*
 //下面是测试代码  
 void *myprocess(const void *argc)

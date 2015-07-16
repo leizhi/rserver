@@ -52,9 +52,11 @@ typedef struct
   
     /*是否销毁线程池*/  
     int shutdown;  
-     pthread_t *threadid;  
+     pthread_t *threadid;
+
     /*线程池中允许的活动线程数目*/  
     int max_thread_num;  
+
     /*当前等待队列的任务数目*/  
     int cur_queue_size;  
 } CThread_pool;  
@@ -74,6 +76,10 @@ int pool_add_worker (void *(*process) (const void *arg), void *arg);
 //销毁线程池，等待队列中的任务不会再被执行，但是正在运行的线程会一直 
 //把任务运行完后再退出
 int pool_destroy();
+
+//可用线程数
+int pool_free();
+
 #endif
 
 /******************************************************************************

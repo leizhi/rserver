@@ -18,6 +18,8 @@
 #include "PacketAnalysisProcess.h"
 #include "ThreadPool.h"
 
+#define POOL_MAX 25
+
 /******************************************************************************
     处理名        ：  类的构造，类的成员变量的初始化处理
     函数名        ：  CSocketMonitorProcess()
@@ -87,9 +89,16 @@ void CSocketMonitorProcess::Do(){
 
         int             nRet       = 0;
         char            chName[20] = "\0";
-	    pool_init(25);//线程池中最多三个活动线程
+	    pool_init(POOL_MAX);//初始化线程池
+
         while(1){
-            // 2.有新的Socket连接到达
+            if(pool_free()==0){
+                printfs(0, "[%s] 线程池无可用线程!","CSocketMonitorProcess::Do()");
+                sleep(1);
+                continue;
+            }
+
+            //有新的Socket连接到达
             m_pRecvSocket = new HTCPSocket();
 
             nRet = m_pRecvSocket->Accept(&m_monitorSocket);
