@@ -98,11 +98,11 @@ void CSocketMonitorProcess::Do(){
                 continue;
             }
 
+            printfs(1, "<CSocketMonitorProcess::Do()> 轮询新的Socket连接到达!");
             //有新的Socket连接到达
             m_pRecvSocket = new HTCPSocket();
 
             nRet = m_pRecvSocket->Accept(&m_monitorSocket);
-            printfs(1, "<CSocketMonitorProcess::Do()> 有新的Socket连接到达!");
 
             if( nRet != 1 ) {
                 printfs(0, "[%s] [Accept failed 新的Socket申请失败!]", "CSocketMonitorProcess::Do()");
@@ -116,18 +116,10 @@ void CSocketMonitorProcess::Do(){
 
             printfs(2, "<CSocketMonitorProcess::Do()> 新的Socket申请成功!");
             //新连接的任务加入线程池并启动
-            nRet = pool_add_worker(clientprocess, m_pRecvSocket);
-            //线程池满
-            if(nRet==0){
-                if(m_pRecvSocket!=NULL) {
-                    delete m_pRecvSocket;
-                    m_pRecvSocket = NULL;
-                }
-                printfs(0, "[%s]服务器停止接受客户端3s!","CSocketMonitorProcess::Do()");
-                sleep(3);
-                continue;
-            }
-            printfs(2, "<CSocketMonitorProcess::Do()> 轮询下一个连接!");
+            pool_add_worker(clientprocess, m_pRecvSocket);
+            printfs(2, "<CSocketMonitorProcess::Do()> 新的Socket 获取线程执行中!");
+
+            printfs(1, "<CSocketMonitorProcess::Do()> 轮询新的Socket连接结束!");
         }
     } catch(...){
         printfs(0, "[CSocketMonitorProcess::Do()] [Exception occured]");
