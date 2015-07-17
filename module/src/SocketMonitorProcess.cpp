@@ -48,22 +48,24 @@ CSocketMonitorProcess::~CSocketMonitorProcess(){
 void *clientprocess(const void *m_pTCPSocket)
 {
     try{
-	IProcess* m_pProcess = NULL;
-    HTCPSocket *tcpp = NULL;
+	    IProcess* m_pProcess = NULL;
+        HTCPSocket *tcpp = NULL;
 
-    tcpp = (HTCPSocket*)m_pTCPSocket;
-	m_pProcess = (IProcess*)(new CPacketAnalysisProcess(tcpp));
-	printfs(2, "clientprocess pid:%u m_pProcess:0x%04x m_pTCPSocket:0x%04x m_nsocket_tcp:%u",
-	    pthread_self(),m_pProcess,tcpp,tcpp->get_m_nsocket_tcp());
+        tcpp = (HTCPSocket*)m_pTCPSocket;
+	    m_pProcess = (IProcess*)(new CPacketAnalysisProcess(tcpp));
+	    printfs(2, "clientprocess pid:%u m_pProcess:0x%04x m_pTCPSocket:0x%04x m_nsocket_tcp:%u",
+	        pthread_self(),m_pProcess,tcpp,tcpp->get_m_nsocket_tcp());
 
-	m_pProcess->Do();
+	    m_pProcess->Do();
 
-	delete m_pProcess;
-	m_pProcess = NULL;
+        if(m_pProcess!=NULL){
+	        delete m_pProcess;
+	        m_pProcess = NULL;
+        }
     }catch(exception e){
     	printfs(1, "myprocess exception");
     }
-    return NULL;
+    //return NULL;
 }
 
 /******************************************************************************

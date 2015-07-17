@@ -47,6 +47,7 @@ HTCPSocket::~HTCPSocket(){
     if (m_bInitTCP) {
         Close();
     }
+    printfs(2, "~HTCPSocket Release Success");
 }
 
 /******************************************************************************
@@ -248,11 +249,11 @@ void HTCPSocket::Close(){
         RET = ::shutdown(m_nsocket_tcp, SHUT_RDWR);
 
         if(RET!=0){
-            printfs(0, "<HTCPSocket> pid:%u m_nsocket_tcp:%u shutdown ERROR %d",pthread_self(),m_nsocket_tcp,errno);
+            printfs(0, "<HTCPSocket> pid:%u m_nsocket_tcp:%u shutdown ERROR %d RET:%d",pthread_self(),m_nsocket_tcp,errno,RET);
         }
         RET = ::close(m_nsocket_tcp);
         if(RET != 0) {
-            printfs(0, "<HTCPSocket> pid:%u m_nsocket_tcp:%u close ERROR %d",pthread_self(),m_nsocket_tcp,errno);
+            printfs(0, "<HTCPSocket> pid:%u m_nsocket_tcp:%u close ERROR %d RET:%d",pthread_self(),m_nsocket_tcp,errno,RET);
         }
         m_bInitTCP = false;
     }
