@@ -454,6 +454,7 @@ int HTCPSocket::Send(const char *buffer, size_t size){
         int sent = ::send(m_nsocket_tcp, buffer + total_sent,
                           expected_size - total_sent, 0);
         if (sent <= 0) {
+        	Close();
             if( errno == EAGAIN ) {
                 printfs(0, "[%s]", "Timeout");
                 return 0;
@@ -464,8 +465,7 @@ int HTCPSocket::Send(const char *buffer, size_t size){
         }
         total_sent += sent;
     }
-    printfs(2, "Sent %ld bytes out of %ld.", 
-             total_sent, expected_size);
+    printfs(2, "Sent %ld bytes out of %ld.",total_sent, expected_size);
     return 1;
 }
 
@@ -485,9 +485,9 @@ int HTCPSocket::Receive(void *buffer, long size) {
     printfs(2, "Beginning to receive TCP message...(Size %ld)", size);
     while (RBLength < size)
     {
-        nReceived = recv(m_nsocket_tcp, 
-                        (char *) buffer + RBLength, size - RBLength, 0);
+        nReceived = recv(m_nsocket_tcp,(char *) buffer + RBLength, size - RBLength, 0);
         if (nReceived <= 0) {
+        	Close();
             if( errno == EAGAIN ) {
                 printfs(0, "[%s]", "Receive Timeout");
                 return 0;
@@ -497,15 +497,6 @@ int HTCPSocket::Receive(void *buffer, long size) {
             }
         }
         RBLength += nReceived;
-        if (nReceived <= 0) {
-            if( errno == EAGAIN ) {
-                printfs(0, "[%s]", "Receive Timeout");
-                return 0;
-            } else {
-                printfs(0, "[%s]", "recv");
-                return -1;
-            }
-        }
     }
     printfs(2, "Received %ld bytes out of %ld.", RBLength, size);
     return 1;

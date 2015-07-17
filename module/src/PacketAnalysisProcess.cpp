@@ -51,12 +51,6 @@ CPacketAnalysisProcess::~CPacketAnalysisProcess(){
         delete m_pSendSocket;
         m_pSendSocket = NULL;
     }
-
-    if(m_pProcess != NULL) {
-        printfs(1, " close m_pSendSocket 0x%04x",m_pProcess);
-        delete m_pProcess;
-        m_pProcess = NULL;
-    }
 }
 
 /******************************************************************************
@@ -177,6 +171,9 @@ void CPacketAnalysisProcess::Do(){
     m_pProcess->SetRecvInfo(m_pRecvSocket, headerInfo.nInfoType);
     m_pProcess->Do();
 
+	delete m_pProcess;
+	m_pProcess = NULL;
+	
     printfs(1,"<CPacketAnalysisProcess::Do()> analysis packet process end!");
 }
 
