@@ -39,7 +39,7 @@ typedef struct worker
 	void *(*process) (const void *arg);  
 	void *arg;/*回调函数的参数*/
 	struct worker *next;
-} CThread_worker;  
+} CThread_worker;
   
 /*线程池结构*/  
 typedef struct 

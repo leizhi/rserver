@@ -1,0 +1,4 @@
+autoscan: warning: missing AC_FUNC_MALLOC wanted by: 
+	module/src/ThreadPool.c:7
+	module/src/ThreadPool.c:19
+	module/src/ThreadPool.c:35

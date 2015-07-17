@@ -12,24 +12,19 @@
 /*                V1.00      09-11-11          Create                        */
 /*                                                                           */
 /*****************************************************************************/
-#pragma once
-
+#include "unistd.h"
 #include "time.h"
 #include "stdio.h"
 #include "string.h"
 #include "sys/types.h"
+#include "sys/stat.h"
 #include "stdarg.h"
-#include <iostream>
-#include <fstream>
-
-using namespace std;
+#include "fcntl.h"
 
 #ifndef INCLUDE_LOG_H
 
 #define INCLUDE_LOG_H
 
-//extern char logdtnows[20];
-    
 char * getNow();
 
 void printfs(unsigned int nlevel, const char * fmt, ...);

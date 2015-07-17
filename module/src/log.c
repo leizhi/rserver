@@ -16,6 +16,8 @@ char * getNow(){
 
 void printfs(unsigned int nlevel, const char * fmt, ...){
 
+    int RET = -1;
+    
 	int dlevel = 1;
 	if(dlevel==1){
         char buf[2048]    = "\0";
@@ -45,20 +47,28 @@ void printfs(unsigned int nlevel, const char * fmt, ...){
 
 	    const char * filename = "rserver.log";
 
-	    ofstream of(filename,ios::app);
-
+        int fd;
+        fd=open(filename,O_WRONLY|O_CREAT|O_APPEND,0644);
+        if(fd ==-1)
+        {
+            printf("open error\r\n");
+            return;
+        }
+    
 	    time_t t = time(0);
 	    char times[64]={0};
 
 	    strftime(times, sizeof(times), "%Y/%m/%d %X:",localtime(&t));
 
-        sprintf(logbuf, "%s [%s] %s", times, cType, buf);
+        sprintf(logbuf, "%s [%s] %s \n", times, cType, buf);
 
-
-	    of<<logbuf<<endl;
+        RET = write(fd, logbuf, strlen(logbuf));
+        if (RET != strlen(logbuf))
+        {
+            printf("shit\r\n");
+        }
+        close(fd);
 
 	    printf("%s\n", logbuf);
-
-	    of.close();
 	}
 }

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+PWD=`pwd`
+
+jflist=`find -name "*.cpp" -print`
+for jf in $jflist
+do
+  cf0=`echo $jf | sed s/\.cpp$/\.c/`
+  cf=${CLASSES}${cf0}
+  if [ $cf -ot $jf ]; then
+     mv $jf $cf0
+  fi
+done
