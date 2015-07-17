@@ -40,6 +40,8 @@ typedef struct
 
 static _system_conf system_conf;
 
+void init_channel_conf();
+
 void init_system_conf();
 
 //   删除左边的空格

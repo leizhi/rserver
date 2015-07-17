@@ -109,9 +109,14 @@ int GetProfileString(char *profile, char *AppName, char *KeyName, char *KeyVal )
   return(-1);
 }
 
+void init_channel_conf(){
+
+}
+
 void init_system_conf(){
 
 }
+
 /*
 void main()
 {

@@ -69,6 +69,6 @@ void printfs(unsigned int nlevel, const char * fmt, ...){
         }
         close(fd);
 
-	    printf("%s\n", logbuf);
+	    printf("%s", logbuf);
 	}
 }
