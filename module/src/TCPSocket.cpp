@@ -490,11 +490,10 @@ int HTCPSocket::Receive(void *buffer, long size) {
         	Close();
             if( errno == EAGAIN ) {
                 printfs(0, "[%s]", "Receive Timeout");
-                return 0;
             } else {
-                printfs(0, "[%s]", "recv");
-                return -1;
+                printfs(0, "[%s] [%d]", "recv",m_nsocket_tcp);
             }
+            break;
         }
         RBLength += nReceived;
     }
