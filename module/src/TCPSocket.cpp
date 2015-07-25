@@ -419,10 +419,11 @@ bool HTCPSocket::CreateReceiveSocket(char* pInIPAddr, int nInPort, int nTimeout)
         return false;
     }
     printf("Open()\n");
-    struct linger so_linger;
+    
+    /*struct linger so_linger;
     so_linger.l_onoff = 1;
 	so_linger.l_linger = 0;
-	setsockopt(m_nsocket_tcp,SOL_SOCKET,SO_LINGER,&so_linger,sizeof so_linger);
+	setsockopt(m_nsocket_tcp,SOL_SOCKET,SO_LINGER,&so_linger,sizeof so_linger);*/
 
     if (!Bind(pInIPAddr, nInPort)) {
         printfs(0, "[%s]", "Bind()");
