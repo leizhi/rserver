@@ -365,7 +365,7 @@ bool HTCPSocket::CreateSendSocket(char* pOutIPAddr,
                      false ： 失败
 ******************************************************************************/
 bool HTCPSocket::CreateReceiveSocket(int nInPort) {
-    return CreateReceiveSocket(LOCALHOST_LISTEN_IP, nInPort, 3);
+    return CreateReceiveSocket(LOCALHOST_LISTEN_IP, nInPort, 9);
 }
 
 /******************************************************************************
@@ -389,7 +389,7 @@ bool HTCPSocket::CreateReceiveSocket(int nInPort, int nTimeout) {
                      false ： 失败
 ******************************************************************************/
 bool HTCPSocket::CreateReceiveSocket(char* pInIPAddr, int nInPort) {
-    return CreateReceiveSocket(pInIPAddr, nInPort, 3);
+    return CreateReceiveSocket(pInIPAddr, nInPort, 9);
 }
 
 /******************************************************************************
