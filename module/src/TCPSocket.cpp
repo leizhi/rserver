@@ -247,10 +247,10 @@ void HTCPSocket::Close(){
     printfs(2, "<HTCPSocket> Close():%d IsClosed:%d",m_nsocket_tcp,IsClosed());
     if (!IsClosed()) {
         RET = ::shutdown(m_nsocket_tcp, SHUT_RDWR);
-
         if(RET!=0){
             printfs(0, "<HTCPSocket> pid:%u m_nsocket_tcp:%u shutdown ERROR %d RET:%d",pthread_self(),m_nsocket_tcp,errno,RET);
         }
+
         RET = ::close(m_nsocket_tcp);
         if(RET != 0) {
             printfs(0, "<HTCPSocket> pid:%u m_nsocket_tcp:%u close ERROR %d RET:%d",pthread_self(),m_nsocket_tcp,errno,RET);
@@ -365,7 +365,7 @@ bool HTCPSocket::CreateSendSocket(char* pOutIPAddr,
                      false ： 失败
 ******************************************************************************/
 bool HTCPSocket::CreateReceiveSocket(int nInPort) {
-    return CreateReceiveSocket(LOCALHOST_LISTEN_IP, nInPort, 9);
+    return CreateReceiveSocket(LOCALHOST_LISTEN_IP, nInPort, 3);
 }
 
 /******************************************************************************
@@ -389,7 +389,7 @@ bool HTCPSocket::CreateReceiveSocket(int nInPort, int nTimeout) {
                      false ： 失败
 ******************************************************************************/
 bool HTCPSocket::CreateReceiveSocket(char* pInIPAddr, int nInPort) {
-    return CreateReceiveSocket(pInIPAddr, nInPort, 9);
+    return CreateReceiveSocket(pInIPAddr, nInPort, 3);
 }
 
 /******************************************************************************
@@ -421,8 +421,8 @@ bool HTCPSocket::CreateReceiveSocket(char* pInIPAddr, int nInPort, int nTimeout)
     printf("Open()\n");
     
     /*struct linger so_linger;
-    so_linger.l_onoff = 1;
-	so_linger.l_linger = 0;
+    so_linger.l_onoff = 1;//0取消延迟关闭 1开启延迟关闭
+	so_linger.l_linger = 0;//超时时间s
 	setsockopt(m_nsocket_tcp,SOL_SOCKET,SO_LINGER,&so_linger,sizeof so_linger);*/
 
     if (!Bind(pInIPAddr, nInPort)) {
