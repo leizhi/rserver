@@ -1,10 +1,12 @@
-自动处理
 touch Makefile.am
 autoscan
 vi configure.scan
 aclocal
-autoconf
 autoheader
+touch README NEWS AUTHORS ChangeLog
 automake --add-missing
+autoconf
 ./configure
 
+#pkg-config --cflags --libs gtk+-2.0
+#pkg-config --cflags --libs opencv
